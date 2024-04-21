@@ -1,12 +1,20 @@
 <div x-show="state === 'todo' || state === 'paused' || state === 'prio' || state === 'remind' || state === 'regular' || state === 'meeting' || state === 'contact'">
 
     <div class="flex gap-2 mt-2 sm:mt-0">
-        <div class="grow">
+        <div class="border px-2 text-lg pt-0.5 rounded-md block sm:hidden">
+            <span x-show="state === 'todo'">All</span>
+            <span x-show="state === 'regular'">Todo</span>
+            <span x-show="state === 'remind'">Remind</span>
+            <span x-show="state === 'prio'">Prio</span>
+            <span x-show="state === 'meeting'">Meeting</span>
+            <span x-show="state === 'contact'">Contact</span>
+            <span x-show="state === 'paused'">Paused</span>
+        </div>
+        <div class="grow ">
             <input wire:model.live="search" type="text" class="py-1 px-2 rounded-md w-full border-gray-200 text-gray-900 dark:text-white dark:bg-gray-700" placeholder="Search">
         </div>
         <div class="border px-2 text-lg pt-0.5 rounded-md">{{$openTodos->count()}} st</div>
     </div>
-
     <div>
         <dl class="mt-2 divide-y divide-gray-200 border-b border-t border-gray-200">
             @foreach ($openTodos as $key => $item)

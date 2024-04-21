@@ -17,6 +17,9 @@ class Todo extends Component
     public $setPrio = false;
     public $search;
 
+    public $paused = false, $prio = false, $remind = null, $regular = true, $meeting = false, $contact = false;
+    public $pausedCount, $prioCount, $remindCount, $regularCount, $allCount, $meetingCount, $contactCount, $doneCount;
+
     public function resetAll() {
         $this->remind_date = null; $this->setPrio = false; $this->todo = null;
         $this->dispatch('update-todo-count');
@@ -206,13 +209,6 @@ class Todo extends Component
 
     }
 
-    public $paused = false, $prio = false, $remind = null, $regular = true, $meeting = false, $contact = false;
-    public $pausedCount, $prioCount, $remindCount, $regularCount, $allCount, $meetingCount, $contactCount, $doneCount;
-
-    public function test() {
-        dd(\App\Models\todo\Todo::where('user_id', Auth::id())->where('done', false)->where('contact', true)->count(), $this->contactCount);
-    }
-
     public function render()
     {
         $this->getCount();
@@ -242,7 +238,7 @@ class Todo extends Component
                     $query->whereNotNull('remind_date')
                         ->orWhereNotNull('repeat');})->get();
         }
-        if ($this->regular) { $query->whereNull('remind_date')->where('notice', false)->where('paused', false); }
+        if ($this->regular) { $query->whereNull('remind_date')->where('notice', false)->where('paused', false)->where('meeting', false); }
 
         // Paginering
         $searchResult = $query->get();

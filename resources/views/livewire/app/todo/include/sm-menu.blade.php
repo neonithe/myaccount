@@ -1,4 +1,4 @@
-<div x-data="{more: true}" class="justify-between flex">
+<div x-data="{more: false}" class="justify-between flex">
     <div class="relative justify-between flex grow">
 
         <div x-show="!more" class="relative justify-between flex grow">
