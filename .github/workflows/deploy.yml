@@ -1,1 +1,57 @@
-<?php
+name: Deploy Prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare SSH key
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > id_rsa
+          chmod 600 id_rsa
+
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
+      - name: Build project
+        run: npm ci && npm run build
+
+      - name: Sync build directory to both locations
+        run: |
+          rsync -avz --ignore-missing-args --delete ./public/build/ -e "ssh -o StrictHostKeyChecking=no -i id_rsa" 54o9fj@ssh.loopia.se:neonithe.se/myaccount/public/build/
+          rsync -avz --ignore-missing-args --delete ./public/build/ -e "ssh -o StrictHostKeyChecking=no -i id_rsa" 54o9fj@ssh.loopia.se:neonithe.se/public_html/build/
+
+
+      - name: Deploy to server
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Files to be transferred:"
+          ls -al
+          echo "Deploying to server..."
+          rsync -avz \
+          --delete \
+          --exclude '.git' \
+          --exclude 'node_modules' \
+          --exclude '.env' \
+          -e "ssh -o StrictHostKeyChecking=no -i id_rsa" ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:/www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount
+
+      - name: Run Laravel Migrations
+        run: |
+          ssh -i id_rsa 54o9fj@ssh.loopia.se "cd /www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount && php artisan migrate"
+      - name: Seed database
+        run: |
+          ssh -i id_rsa 54o9fj@ssh.loopia.se "cd /www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount && php artisan db:seed"
