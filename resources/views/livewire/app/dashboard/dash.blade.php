@@ -24,30 +24,48 @@
 
                     <div class="bg-gray-700 rounded-md p-4">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Reminders</div>
-                        <div>Reminders</div>
+                        <div>
+                            @if ($this->getTodoReminders()->count() != 0)
+                                <div class="border-b border-gray-600">Reminders</div>
+                            @else
+                                <div class="border-b border-gray-600">Reminders</div>
+                                <span class="italic text-sm">No Repeats</span>
+                            @endif
+                        </div>
                         @foreach ($this->getTodoReminders() as $item)
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1 px-2">
                                 <div class="tracking-widest w-full">
-                                    <div>@if ($item->link)
+                                    <div>
+                                        @if ($item->link)
                                             <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
                                         @else
                                             {{$item->todo}}
-                                        @endif</div>
+                                        @endif
+                                    </div>
                                     <div class="w-full flex justify-between">
                                         @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->remind_date)))
-                                            <div class="text-red-600">{{$item->remind_date}}</div>
+                                            <div class="text-red-600 text-xs">{{$item->remind_date}}</div>
                                             <div>
                                                 Date passed
                                             </div>
                                         @else
-                                            <div class="text-white">{{$item->remind_date}}</div>
+                                            <div class="text-white text-xs">{{$item->remind_date}}</div>
+                                            <div class="text-white text-xs">{{ date('H:i', strtotime($item->remind_time)) }}</div>
                                         @endif
                                     </div>
                                 </div>
                                 <div></div>
                             </div>
                         @endforeach
-                        <div class="mt-2">Repeats</div>
+
+                        <div>
+                            @if ($this->getTodoRepeat()->count() != 0)
+                                <div class="border-b border-gray-600 mt-3">Repeats</div>
+                            @else
+                                <div class="border-b border-gray-600 mt-3">Repeats</div>
+                                <span class="italic text-sm">No Repeats</span>
+                            @endif
+                        </div>
                         @foreach ($this->getTodoRepeat() as $item)
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1 px-2">
                                 <div class="tracking-widest w-full">
@@ -78,7 +96,7 @@
                     <div class="bg-gray-700 rounded-md p-4">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Meeting</div>
                         @foreach ($this->getTodos('meeting') as $item)
-                            <div class="flex justify-between text-sm border-b border-gray-600 py-1">
+                            <div class="flex justify-between text-sm border-b border-gray-600 py-1 @if ($dayName == $item->remind_day) bg-blue-600 @endif px-1 rounded-md">
                                 <div class="tracking-widest">
                                     @if ($item->link)
                                         <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
@@ -86,7 +104,14 @@
                                         {{$item->todo}}
                                     @endif
                                 </div>
-                                <div>{{ date('H:i', strtotime($item->remind_time)) }}</div>
+                                <div class="flex gap-2">
+                                    <div>
+                                        {{$item->remind_day}}
+                                    </div>
+                                    <div>
+                                        {{ date('H:i', strtotime($item->remind_time)) }}
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -108,7 +133,7 @@
                     </div>
 
 
-                    <div class="bg-gray-700 rounded-md p-4">
+                    <div class="bg-gray-700 rounded-md p-4 hidden sm:block">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Todos</div>
 
                         <div class="flex justify-between text-sm border-b border-gray-600 py-1">
@@ -145,7 +170,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-gray-700 rounded-md p-4">
+                    <div class="bg-gray-700 rounded-md p-4 hidden sm:block">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Workout</div>
                         @foreach ($workouts as $workout)
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1">
@@ -155,7 +180,7 @@
                         @endforeach
                     </div>
 
-                    <div class="bg-gray-700 rounded-md p-4">
+                    <div class="bg-gray-700 rounded-md p-4 hidden sm:block">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Food</div>
                         <div class="flex justify-between text-sm border-b border-gray-600 py-1">
                             <div class="tracking-widest">Recipes</div>

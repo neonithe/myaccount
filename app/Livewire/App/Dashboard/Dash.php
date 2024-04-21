@@ -21,6 +21,8 @@ class Dash extends Component
     // Crypto
     public $cryptoList = [];
 
+    public $dayName;
+
     /** MyToDo ********************************************************************************************************/
     public function getTodoCount() {
         $this->allCount     = \App\Models\todo\Todo::where('user_id', Auth::id())->where('done', false)->count();
@@ -65,14 +67,14 @@ class Dash extends Component
     /** Crypto ********************************************************************************************************/
     public function calc()
     {
-
+        /** testing
         $this->cryptoList = [
         'usdToSek'=>10.50,//$data['usd']['sek'],  // Hämta kursen för USD till SEK
         'btc'=>60000,//$prices['bitcoin']['usd'], // Sätt kursen för bitcoin i USD
         'xrp'=>0.5,//$prices['ripple']['usd'],  // Sätt kursen för ripple i USD
         'eth'=>1300,//$prices['ethereum']['usd'],// Sätt kursen för ethereum i USD
-        ];
-        /** testing
+        ];*  **/
+
         $client = new Client();
 
         // Hämta växelkursen USD till SEK
@@ -89,7 +91,7 @@ class Dash extends Component
             'xrp'=>$prices['ripple']['usd'],  // Sätt kursen för ripple i USD
             'eth'=>$prices['ethereum']['usd'],// Sätt kursen för ethereum i USD
         ];
-         *  **/
+
     }
 
     /** Budget ********************************************************************************************************/
@@ -103,6 +105,8 @@ class Dash extends Component
     public function render()
     {
         $this->getTodoCount();
+        $this->dayName  = Carbon::now()->locale('en')->isoFormat('dddd');
+
         return view('livewire.app.dashboard.dash',[
             'workouts'      =>  Workout::where('user_id', Auth::id())->get(),
             'recipeCount'   =>  Recipe::where('user_id', Auth::id())->count(),

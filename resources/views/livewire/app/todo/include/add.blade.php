@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+    <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
         <div>
             <label class="text-xs">Datum påminnelse</label>
             <input wire:model="remind_date" type="date" class="text-sm border rounded-md py-1.5 px-2 w-full text-gray-900 dark:text-white dark:bg-gray-700">
@@ -21,10 +21,23 @@
             <input wire:model="repeat" type="date" class="text-sm border rounded-md py-1.5 px-2 w-full text-gray-900 dark:text-white dark:bg-gray-700">
         </div>
         <div>
-            <label class="text-xs">Tid</label>
+            <label class="text-xs">Mötes Tid</label>
             <input wire:model="time" type="time" class="text-sm border rounded-md py-1.5 px-2 w-full text-gray-900 dark:text-white dark:bg-gray-700">
         </div>
         <div>
+            <label class="text-xs">Mötes Dag</label>
+            <select wire:model="day" class="text-sm border rounded-md py-1.5 px-2 w-full text-gray-900 dark:text-white dark:bg-gray-700">
+                <option value="">Day</option>
+                <option value="Monday" >Monday</option>
+                <option value="Tuesday" >Tuesday</option>
+                <option value="Wednesday" >Wednesday</option>
+                <option value="Thursday" >Thursday</option>
+                <option value="Friday" >Friday</option>
+                <option value="Saturday" >Saturday</option>
+                <option value="Sunday" >Sunday</option>
+            </select>
+        </div>
+        <div class="col-span-2 sm:col-span-1">
             <div class="flex gap-1 mt-6 justify-end">
                 @if ($setPrio)
                     <div>
@@ -52,7 +65,6 @@
             </div>
         </div>
     </div>
-
 
     <div x-show="more" class="mt-2">
         <div class="mb-2 w-full flex rounded-md border dark:bg-gray-700">

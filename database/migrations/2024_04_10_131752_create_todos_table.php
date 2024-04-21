@@ -23,6 +23,7 @@ return new class extends Migration
 
             $table->date('remind_date')->nullable();
             $table->time('remind_time')->nullable();
+            $table->string('remind_day')->nullable();
             $table->date('repeat')->nullable();
 
             $table->longText('comment')->nullable();

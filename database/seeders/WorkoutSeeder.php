@@ -26,15 +26,11 @@ class WorkoutSeeder extends Seeder
         WorkoutArea::create(['name'=>'Rygg']); //9
 
         Workout::create(['user_id'=>1, 'workout_set'=>'Monday Leg', 'day'=>'Monday']);
-        Workout::create(['user_id'=>1, 'workout_set'=>'Thuseday Arms', 'day'=>'Tuesday']);
-        Workout::create(['user_id'=>1, 'workout_set'=>'Wednesday Chest', 'day'=>'Wednesday']);
-        Workout::create(['user_id'=>1, 'workout_set'=>'Thursday Calastenics', 'day'=>'Thursday']);
-        Workout::create(['user_id'=>1, 'workout_set'=>'Friday Core', 'day'=>'Friday']);
 
-        Exercises::create(['user_id'=>1, 'exercise'=>'Armhävningar', 'link'=>'www.google.com', 'area_id'=>1]);
+        Exercises::create(['user_id'=>1, 'exercise'=>'Armhävningar', 'area_id'=>1]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Situps', 'area_id'=>7]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Marklyft', 'area_id'=>8]);
-        Exercises::create(['user_id'=>1, 'exercise'=>'Stela marklyft', 'link'=>'www.google.com', 'area_id'=>9]);
+        Exercises::create(['user_id'=>1, 'exercise'=>'Stela marklyft', 'area_id'=>9]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Biceps curls', 'area_id'=>2]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Leg extensions', 'area_id'=>3]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Chest press', 'area_id'=>1]);

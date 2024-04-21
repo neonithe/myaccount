@@ -13,7 +13,7 @@ class Todo extends Component
     Use WithPagination;
     public $pages = 8;
 
-    public $todo, $remind_date, $link, $comment, $repeat, $time;
+    public $todo, $remind_date, $link, $comment, $repeat, $time, $day;
     public $setPrio = false;
     public $search;
 
@@ -35,6 +35,7 @@ class Todo extends Component
             'notice'      => $this->setPrio,
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,
+            'remind_day'  => $this->day,
         ]);
         $this->resetAll();
     }
@@ -52,6 +53,7 @@ class Todo extends Component
             'notice'      => $this->setPrio,
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,
+            'remind_day'  => $this->day,
         ]);
         $this->resetAll();
     }
@@ -139,6 +141,18 @@ class Todo extends Component
     public function removeTime($id) {
         $data = \App\Models\todo\Todo::findOrFail($id);
         $data->remind_time = null;
+        $data->save();
+    }
+
+    public function changeDay($id, $value) {
+        $data = \App\Models\todo\Todo::findOrFail($id);
+        $data->remind_day = $value;
+        $data->save();
+    }
+
+    public function removeDay($id) {
+        $data = \App\Models\todo\Todo::findOrFail($id);
+        $data->remind_day = null;
         $data->save();
     }
 
