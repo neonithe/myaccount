@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* För Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* För Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.custom-select {
+    -webkit-appearance: none; /* För Safari */
+    -moz-appearance: none;    /* För Firefox */
+    appearance: none;         /* Standard för moderna webbläsare */
+    background: transparent;  /* Gör bakgrunden genomskinlig */
+    border: none;/* Ta bort alla border */
+    width: 40px;
+    text-align: center;
+    padding: 2px;
+}
