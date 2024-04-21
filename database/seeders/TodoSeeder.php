@@ -45,7 +45,7 @@ class TodoSeeder extends Seeder
 
         Todo::create([
             'user_id'       =>  1,
-            'todo'          =>  'TEST REPEAT',
+            'todo'          =>  'TEST REPEAT2',
             'repeat'        =>  '2024-03-18',
         ]);
 
