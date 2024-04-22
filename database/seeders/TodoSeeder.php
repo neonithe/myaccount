@@ -26,6 +26,7 @@ class TodoSeeder extends Seeder
         Todo::create([
             'user_id'       =>  1,
             'todo'          =>  'Dev meeting',
+            'link'          =>  'meet.google.com/fne-eckw-aft',
             'meeting'       =>  true,
             'remind_time'   =>  '09:00',
             'remind_day'    =>  'Wednesday',
@@ -42,14 +43,17 @@ class TodoSeeder extends Seeder
         Todo::create([
             'user_id'       =>  1,
             'todo'          =>  'Company meeting',
+            'link'          =>  'meet.google.com/ggv-gmrz-cwu',
             'meeting'       =>  true,
             'remind_time'   =>  '10:00',
             'remind_day'    =>  'Wednesday',
+            'comment'       =>  'Uppdatera roadmap och filen som presenteras.',
         ]);
 
         Todo::create([
             'user_id'       =>  1,
             'todo'          =>  'Product meeting',
+            'link'          =>  'meet.google.com/cob-mwaj-hzc',
             'meeting'       =>  true,
             'remind_time'   =>  '11:00',
             'remind_day'    =>  'Wednesday',

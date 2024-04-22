@@ -1,14 +1,14 @@
+<div x-show="!moreinfo" class="mt-1"></div>
 <div class="flex grow">
     <div class="flex grow">
+
         <div x-show="!smScreenMenu" class="grow">
             <input wire:keydown.enter="changeToDo({{ $item->id }}, $event.target.value)" type="text" value="{{ $item->todo }}" class="w-full py-1 px-2 rounded-md text-sm w-full border border-gray-800 text-gray-900 dark:text-white dark:bg-gray-800">
         </div>
+
         <div x-show="smScreenMenu" class="flex justify-end grow">
             @if ($item->repeat)
                 <div class="pl-2 pt-0.5 text-blue-600"><x-app.icons.update class="h-7 w-7" /></div>
-            @endif
-            @if ($item->remind_time)
-                <div class="pl-2 pt-0.5 text-blue-600 text-xl">{{ date('H:i', strtotime($item->remind_time)) }}</div>
             @endif
             @if ($item->link)
                 <div class="-mt-4">
@@ -62,6 +62,7 @@
                 </div>
         </div>
     </div>
+
     <div class="flex">
         @if ($item->notice)
             <div x-show="!smScreenMenu" style="margin-top: 5px">
@@ -77,4 +78,41 @@
         </div>
     </div>
 
+</div>
+
+<div x-show="!moreinfo" class="flex justify-between">
+    <div class="flex">
+        @if ($item->remind_day)
+            <div class="pl-2 pt-0.5 text-blue-600 text-xs">
+                {{ $item->remind_day }}
+            </div>
+        @endif
+        @if ($item->remind_time)
+            <div class="pl-1 pt-0.5 text-blue-600 text-xs pr-1">
+                {{ date('H:i', strtotime($item->remind_time)) }}
+            </div>
+        @endif
+    </div>
+    <div class="flex pr-1.5">
+        @if ($item->meeting)
+            <div class="pl-1 pt-0.5 text-blue-600 text-xs">
+                <x-app.icons.meeting class="h-4 w-4" />
+            </div>
+        @endif
+        @if ($item->contact)
+            <div class="pl-1 pt-0.5 text-blue-600 text-xs">
+                <x-app.icons.phone class="h-4 w-4" />
+            </div>
+        @endif
+        @if ($item->link)
+            <div class="pl-1 pt-0.5 text-blue-600 text-xs">
+                <x-app.icons.link class="h-4 w-4" />
+            </div>
+        @endif
+        @if ($item->comment)
+            <div class="pl-1 pt-0.5 text-blue-600 text-xs">
+                <x-app.icons.comment class="h-4 w-4" />
+            </div>
+        @endif
+    </div>
 </div>

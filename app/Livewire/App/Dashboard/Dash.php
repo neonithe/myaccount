@@ -46,7 +46,7 @@ class Dash extends Component
                 ->orderByRaw("FIELD(remind_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
                 ->get();
         } else {
-            return Todo::where('user_id', Auth::id())->where($type, true)->get();
+            return Todo::where('user_id', Auth::id())->where($type, true)->where('done', false)->get();
         }
     }
     public function getTodoReminders() {
@@ -69,6 +69,18 @@ class Dash extends Component
             $data->repeat = $newReminderDate->format('Y-m-d');
             $data->save();
         }
+    }
+
+    public function getDaysTo($date) {
+        $date = Carbon::parse($date);
+        return number_format(Carbon::now()->diffInDays($date, false), 0, ',', ' ');
+    }
+
+    public function check($id) {
+        $data = Todo::findOrFail($id);
+        $data->done = true;
+        $data->done_date = date('Y-m-d');
+        $data->save();
     }
 
     /** Crypto ********************************************************************************************************/

@@ -12,12 +12,14 @@
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1">
                                 <div class="tracking-widest">
                                     @if ($item->link)
-                                        <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
+                                        <a href="{{$item->link}}" target="_blank"  @if ($item->comment) x-tooltip="{{$item->comment}}" @endif  class="text-blue-500 hover:underline">{{$item->todo}}</a>
                                     @else
-                                        {{$item->todo}}
+                                        <div @if ($item->comment) x-tooltip="{{$item->comment}}" class="cursor-pointer" @endif >{{$item->todo}}</div>
                                     @endif
                                 </div>
-                                <div></div>
+                                <div>
+                                    <button wire:click="check({{$item->id}})" class="border rounded-md px-0.5 py-0.5 hover:bg-green-600"><x-app.icons.check class="h-3 w-3" /></button>
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -26,31 +28,56 @@
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Reminders</div>
                         <div>
                             @if ($this->getTodoReminders()->count() != 0)
-                                <div class="border-b border-gray-600">Reminders</div>
+                                <div class="border-b border-gray-600 font-bold">Reminders</div>
                             @else
-                                <div class="border-b border-gray-600">Reminders</div>
+                                <div class="border-b border-gray-600 font-bold">Reminders</div>
                                 <span class="italic text-sm">No Repeats</span>
                             @endif
                         </div>
+
                         @foreach ($this->getTodoReminders() as $item)
-                            <div class="flex justify-between text-sm border-b border-gray-600 py-1 px-2">
+                            <div @if ($item->comment) x-tooltip="{{$item->comment}}" @endif class="flex justify-between text-sm py-1 px-2 @if ($item->remind_date == date('Y-m-d')) bg-blue-700 rounded-md border mb-1 @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->remind_date))) bg-red-700 rounded-md border mb-1 @else border-b border-gray-600 mb-1 @endif">
                                 <div class="tracking-widest w-full">
-                                    <div>
+                                    <div class="flex justify-between">
                                         @if ($item->link)
-                                            <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
+                                            <a href="{{$item->link}}" target="_blank" class="text-blue-200 font-bold hover:underline">
+                                                {{$item->todo}}
+                                            </a>
                                         @else
                                             {{$item->todo}}
                                         @endif
+
+                                        <div class="flex gap-1">
+                                            @if ($item->remind_time)
+                                                <div class="text-white text-xs mt-0.5">{{ date('H:i', strtotime($item->remind_time)) }}</div>
+                                            @endif
+                                            <div>
+                                                <button wire:click="check({{$item->id}})" class="border rounded-md px-0.5 py-0.5 hover:bg-green-600"><x-app.icons.check class="h-3 w-3" /></button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="w-full flex justify-between">
-                                        @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->remind_date)))
-                                            <div class="text-red-600 text-xs">{{$item->remind_date}}</div>
-                                            <div>
-                                                Date passed
+                                        @if ($item->remind_date == date('Y-m-d'))
+                                            <div class="text-xs font-bold">
+                                                {{$item->remind_date}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                Today
+                                            </div>
+                                        @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->remind_date)))
+                                            <div class="text-xs font-bold">
+                                                {{$item->remind_date}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                {{abs($this->getDaysTo($item->remind_date))-1}} days passed
                                             </div>
                                         @else
-                                            <div class="text-white text-xs">{{$item->remind_date}}</div>
-                                            <div class="text-white text-xs">{{ date('H:i', strtotime($item->remind_time)) }}</div>
+                                            <div class="text-xs font-bold">
+                                                {{$item->remind_date}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                Days:{{$this->getDaysTo($item->remind_date)+1}}
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -60,31 +87,50 @@
 
                         <div>
                             @if ($this->getTodoRepeat()->count() != 0)
-                                <div class="border-b border-gray-600 mt-3">Repeats</div>
+                                <div class="border-b border-gray-600 mt-3 font-bold">Repeats</div>
                             @else
-                                <div class="border-b border-gray-600 mt-3">Repeats</div>
+                                <div class="border-b border-gray-600 mt-3 font-bold">Repeats</div>
                                 <span class="italic text-sm">No Repeats</span>
                             @endif
                         </div>
                         @foreach ($this->getTodoRepeat() as $item)
-                            <div class="flex justify-between text-sm border-b border-gray-600 py-1 px-2">
+                            <div @if ($item->comment) x-tooltip="{{$item->comment}}" @endif class="flex justify-between text-sm py-1 px-2 @if ($item->repeat == date('Y-m-d')) bg-blue-700 rounded-md border mb-1 @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->repeat))) bg-red-700 rounded-md border mb-1 @else border-b border-gray-600 mb-1 @endif">
                                 <div class="tracking-widest w-full">
                                     <div class="flex justify-between">
                                         @if ($item->link)
-                                            <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
+                                            <a href="{{$item->link}}" target="_blank" class="text-blue-200 font-bold hover:underline">
+                                                {{$item->todo}}
+                                            </a>
                                         @else
-                                            <button wire:click="repeatCheck({{$item->id}})" class="text-blue-500 hover:underline">{{$item->todo}}</button>
-                                            <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline"><x-app.icons.link class="h-4 w-4" /></a>
+                                            {{$item->todo}}
                                         @endif
+                                        <div>
+                                            <button wire:click="repeatCheck({{$item->id}})" class="border rounded-md px-0.5 py-0.5 hover:bg-green-600"><x-app.icons.check class="h-3 w-3" /></button>
+                                        </div>
                                     </div>
+
                                     <div class="w-full flex justify-between">
-                                        @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->repeat)))
-                                            <div class="text-red-600">{{$item->repeat}}</div>
-                                            <div>
-                                                Date passed
+                                        @if ($item->repeat == date('Y-m-d'))
+                                            <div class="text-xs font-bold">
+                                                {{$item->repeat}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                Today
+                                            </div>
+                                        @elseif(\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($item->repeat)))
+                                            <div class="text-xs font-bold">
+                                                {{$item->repeat}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                {{abs($this->getDaysTo($item->repeat))-1}} days passed
                                             </div>
                                         @else
-                                            <div class="text-white">{{$item->repeat}}</div>
+                                            <div class="text-xs font-bold">
+                                                {{$item->repeat}}
+                                            </div>
+                                            <div class="text-xs font-bold">
+                                                Days:{{$this->getDaysTo($item->repeat)+1}}
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -96,10 +142,12 @@
                     <div class="bg-gray-700 rounded-md p-4">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Meeting</div>
                         @foreach ($this->getTodos('meeting') as $item)
-                            <div class="flex justify-between text-sm border-b border-gray-600 py-1 @if ($dayName == $item->remind_day) bg-blue-600 @endif px-1 rounded-md">
+                            <div @if ($item->comment) x-tooltip="{{$item->comment}}" @endif class="flex justify-between text-sm py-1 @if ($dayName == $item->remind_day) bg-blue-600 border @else border-b border-gray-600 @endif px-1 rounded-md">
                                 <div class="tracking-widest truncate">
                                     @if ($item->link)
-                                        <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
+                                        <a href="{{$item->link}}" target="_blank" class="font-bold text-blue-200 hover:underline inline-flex">
+                                            {{$item->todo}}
+                                        </a>
                                     @else
                                         {{$item->todo}}
                                     @endif
@@ -122,16 +170,15 @@
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1">
                                 <div class="tracking-widest">
                                     @if ($item->link)
-                                        <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
+                                        <a href="{{$item->link}}" target="_blank" @if ($item->comment) x-tooltip="{{$item->comment}}" @endif class="text-blue-500 hover:underline">{{$item->todo}}</a>
                                     @else
-                                        {{$item->todo}}
+                                        <div @if ($item->comment) x-tooltip="{{$item->comment}}" class="cursor-pointer" @endif >{{$item->todo}}</div>
                                     @endif
                                 </div>
                                 <div></div>
                             </div>
                         @endforeach
                     </div>
-
 
                     <div class="bg-gray-700 rounded-md p-4 hidden sm:block">
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Todos</div>

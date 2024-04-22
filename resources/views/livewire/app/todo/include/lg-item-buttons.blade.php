@@ -16,6 +16,9 @@
             @if ($item->repeat)
                 <div class="pl-2 pt-1.5 text-blue-600"><x-app.icons.update class="h-5 w-5" /></div>
             @endif
+            @if ($item->remind_day)
+                <div class="pl-2 pt-1 text-blue-400 text-base">{{ substr($item->remind_day, 0, 3) }}</div>
+            @endif
             @if ($item->remind_time)
                 <div class="pl-2 pt-1 text-blue-400 text-base">{{ date('H:i', strtotime($item->remind_time)) }}</div>
             @endif

@@ -14,17 +14,36 @@ class Todo extends Component
     public $pages = 8;
 
     public $todo, $remind_date, $link, $comment, $repeat, $time, $day;
-    public $setPrio = false;
+    public $setPrio = false, $setContact = false, $setMeeting = false;
     public $search;
 
     public $paused = false, $prio = false, $remind = null, $regular = true, $meeting = false, $contact = false;
     public $pausedCount, $prioCount, $remindCount, $regularCount, $allCount, $meetingCount, $contactCount, $doneCount;
 
+
+    /** Reset *********************************************************************************************************/
     public function resetAll() {
-        $this->remind_date = null; $this->setPrio = false; $this->todo = null;
+        $this->remind_date = null; $this->setPrio = false; $this->todo = null; $this->setContact = false; $this->setMeeting = false;
         $this->dispatch('update-todo-count');
     }
 
+    public function resetTodoList() {
+        $this->paused = false; $this->prio = false; $this->remind = null;
+        $this->regular = null; $this->meeting = null; $this->contact = null;
+    }
+
+    /** Toggle states for contact and meeting *************************************************************************/
+    public function toggleStates($type) {
+        if ($type == 'contact') {
+            ($this->setContact == false) ? $this->setContact = true : $this->setContact = false;
+        } else if ($type == 'meeting') {
+            ($this->setMeeting == false) ? $this->setMeeting = true : $this->setMeeting = false;
+        } else {
+            ($this->setPrio == false) ? $this->setPrio = true : $this->setPrio = false;
+        }
+    }
+
+    /** Create ********************************************************************************************************/
     public function addTodo() {
         $this->validate([
             'todo'  =>  'required'
@@ -35,12 +54,17 @@ class Todo extends Component
             'remind_date' => ($this->repeat != null) ? null : $this->remind_date,
             'comment'     => $this->comment,
             'link'        => $this->link,
+
             'notice'      => $this->setPrio,
+            'meeting'     => $this->setMeeting,
+            'contact'     => $this->setContact,
+
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,
             'remind_day'  => $this->day,
         ]);
         $this->resetAll();
+        $this->dispatch('successmessage', 'Todo', 'Todo created successfully.');
     }
 
     public function inputAddTodo($value) {
@@ -53,16 +77,23 @@ class Todo extends Component
             'remind_date' => ($this->repeat != null) ? null : $this->remind_date,
             'comment'     => $this->comment,
             'link'        => $this->link,
+
             'notice'      => $this->setPrio,
+            'meeting'     => $this->setMeeting,
+            'contact'     => $this->setContact,
+
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,
             'remind_day'  => $this->day,
         ]);
         $this->resetAll();
+        $this->dispatch('successmessage', 'Todo', 'Todo created successfully.');
     }
 
+    /** Check *********************************************************************************************************/
     public function todoCheck($id) {
         $data = \App\Models\todo\Todo::findOrFail($id);
+        $name = $data->todo;
         if ($data->done == false) {
             if ($data->repeat != null) {
                 // Fånga och formatera nuvarande remind_date från databasen
@@ -81,82 +112,32 @@ class Todo extends Component
             $data->done = false;
             $data->done_date = null;
         }
-
         $data->save();
+        $this->dispatch('successmessage', 'Greate work!', $name.' is checked off!');
     }
 
-    public function changeRepeat($id, $value) {
+    /** Change, remove & delete ***************************************************************************************/
+
+    /** Change **/
+    public function changeToDo($id, $value, $type) {
         $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->repeat = $value;
+        $data->$type = $value;
         $data->save();
+        $this->dispatch('successmessage', 'Todo', 'Todo changed successfully.');
     }
 
-    public function changeTime($id, $value) {
+    /** Remove **/
+    public function removeData($id, $type) {
         $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_time = $value;
+        $data->$type = null;
         $data->save();
+        $this->dispatch('successmessage', 'Todo', 'Attribute removed successfully.');
     }
 
-    public function changeToDo($id, $value) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->todo = $value;
-        $data->save();
-    }
-
-    public function changeLinkToDo($id, $value) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->link = $value;
-        $data->save();
-    }
-
-    public function changeCommentToDo($id, $value) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->comment = $value;
-        $data->save();
-    }
-
-    public function setPrioToggle() {
-        ($this->setPrio == false) ? $this->setPrio = true : $this->setPrio = false;
-    }
-
-    public function changeRemDate($id, $value) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_date = $value;
-        $data->save();
-    }
-
+    /** Delete **/
     public function deleteTodo($id) {
         \App\Models\todo\Todo::findOrFail($id)->delete();
-    }
-
-    public function removeDate($id) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_date = null;
-        $data->save();
-    }
-
-    public function removeRepeat($id) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->repeat = null;
-        $data->save();
-    }
-
-    public function removeTime($id) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_time = null;
-        $data->save();
-    }
-
-    public function changeDay($id, $value) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_day = $value;
-        $data->save();
-    }
-
-    public function removeDay($id) {
-        $data = \App\Models\todo\Todo::findOrFail($id);
-        $data->remind_day = null;
-        $data->save();
+        $this->dispatch('successmessage', 'Todo', 'Todo has been deleted successfully.');
     }
 
     /** States ********************************************************************************************************/
@@ -172,11 +153,6 @@ class Todo extends Component
         $this->dispatch('update-todo-count');
     }
 
-    public function resetTodoList() {
-        $this->paused = false; $this->prio = false; $this->remind = null;
-        $this->regular = null; $this->meeting = null; $this->contact = null;
-    }
-
     public function showListByFilter($type) {
         $this->resetTodoList();
         switch ($type) {
@@ -190,6 +166,7 @@ class Todo extends Component
         $this->render();
     }
 
+    /** Calc and Count ************************************************************************************************/
     public function getCount() {
         $this->allCount     = \App\Models\todo\Todo::where('user_id', Auth::id())->where('done', false)->count();
         $this->pausedCount  = \App\Models\todo\Todo::where('user_id', Auth::id())->where('done', false)->where('paused', true)->count();
@@ -204,6 +181,7 @@ class Todo extends Component
             ->whereNull('remind_date')
             ->where('notice', false)
             ->where('paused', false)
+            ->where('meeting', false)
             ->count();
         $this->doneCount = \App\Models\todo\Todo::where('user_id', Auth::id())->where('done', true)->count();
 
@@ -232,7 +210,10 @@ class Todo extends Component
 
         if ($this->paused) {$query->where('paused', $this->paused);}
         if ($this->prio) { $query->where('notice', $this->prio); }
-        if ($this->meeting) { $query->where('meeting', $this->meeting); }
+        if ($this->meeting) {
+            $query->where('meeting', $this->meeting)
+            ->orderByRaw("FIELD(remind_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')");
+        }
         if ($this->contact) { $query->where('contact', $this->contact); }
         if ($this->remind) {$query->where(function ($query) {
                     $query->whereNotNull('remind_date')
