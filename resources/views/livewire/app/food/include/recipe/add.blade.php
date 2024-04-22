@@ -51,8 +51,24 @@
                 </div>
 
                 <x-app.input.number-input model="ingredients.{{ $index }}.volume" title="Volume" placeholder="2" class="w-full sm:w-auto"/>
-                <x-app.input.text-input model="ingredients.{{ $index }}.type" title="Unit" placeholder="dl, gram, liters..." class="w-full sm:w-auto"/>
 
+                <div>
+                    <label class="text-xs">Unit</label>
+                    <div>
+                        <select wire:model="ingredients.{{ $index }}.type" class="bg-gray-700 py-1 rounded-md border-gray-500">
+                            <option value="" selected >Välj</option>
+                            <option value="g">g</option>
+                            <option value="st">st</option>
+                            <option value="krm">krm</option>
+                            <option value="tsk">tsk</option>
+                            <option value="msk">msk</option>
+                            <option value="dl">dl</option>
+                            <option value="ml">ml</option>
+                            <option value="pkt">pkt</option>
+                            <option value="kg">kg</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="flex gap-2 justify-between grow sm:w-auto">
                     <div class="grow">
                         <x-app.input.number-input model="ingredients.{{ $index }}.gram"  title="In grams for calc" right="g" pr="pr-6"  placeholder="50" class="pl-0 sm:pl-12 w-full sm:w-auto grow" />

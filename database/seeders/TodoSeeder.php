@@ -59,6 +59,12 @@ class TodoSeeder extends Seeder
             'remind_day'    =>  'Wednesday',
         ]);
 
+        Todo::create([
+            'user_id'       =>  1,
+            'todo'          =>  'Betalningar AM',
+            'repeat'        =>  '2024-04-17',
+        ]);
+
         Todo::create(['user_id'       =>  1,
             'todo'          =>  'Topplockspackning',
             'notice'        =>  true,

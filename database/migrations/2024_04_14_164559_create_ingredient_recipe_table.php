@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('ingredient_id');
 
-            $table->integer('volume'); // ex. 2
+            $table->decimal('volume', 10, 4)->nullable();
             $table->string('type_name'); // ex: DL, GRAM
             $table->integer('gram')->default(0); // ex. 100
 

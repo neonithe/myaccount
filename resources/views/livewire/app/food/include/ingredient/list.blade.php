@@ -3,6 +3,9 @@
         <div>Ingredients</div>
         <div class="font-medium text-sm mt-1">( All data is per 100g - On change, enter per 100g ) ({{ \App\Models\recipe\Ingredient::where('user_id', \Illuminate\Support\Facades\Auth::id())->count() }} st)</div>
     </div>
+    <div class="pt-2">
+        <input wire:model.live="ingSearch" type="text" class="w-full py-1 rounded-md bg-gray-700" placeholder="Search">
+    </div>
     <div class="flex text-sm border-b border-gray-500 font-bold pt-4">
         <div class="grow">Namn</div>
         <div class="w-20 text-center">Cal</div>
@@ -32,5 +35,8 @@
         @else
             <p>There is no records</p>
         @endif
+    </div>
+    <div class="mt-2">
+        {{$ingredientList->links()}}
     </div>
 </div>

@@ -108,7 +108,7 @@
                     </div>
                     <div class="flex gap-1 py-1">
                         <div>
-                            <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'volume', $event.target.value)" type="text" value="{{$item->pivot->volume}}" class="bg-gray-800 w-16 py-1 px-1 text-center rounded-md border-gray-700">
+                            <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'volume', $event.target.value)" type="text" value="{{ number_format($item->pivot->volume, 1, ',', ' ') }}" class="bg-gray-800 w-16 py-1 px-1 text-center rounded-md border-gray-700">
                         </div>
                         <div>
                             <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'type_name', $event.target.value)" type="text" value="{{$item->pivot->type_name}}" class="bg-gray-800 w-12 py-1 px-1 text-center rounded-md border-gray-700">

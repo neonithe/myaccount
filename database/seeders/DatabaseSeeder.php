@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(TodoSeeder::class);
         $this->call(WorkoutSeeder::class);
-        //$this->call(RecipeSeeder::class);
+        $this->call(RecipeSeeder::class);
         $this->call(EcoSeeder::class);
         $this->call(CryptoSeeder::class);
     }

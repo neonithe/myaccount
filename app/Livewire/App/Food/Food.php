@@ -6,6 +6,7 @@ use App\Models\recipe\Ingredient;
 use App\Models\recipe\Recipe;
 use App\Models\todo\Todo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -138,25 +139,28 @@ class Food extends Component
 
     /** Ingredient ****************************************************************************************************/
     public function addIngredient() {
-        /**
+
         $this->validate([
-            'ingredientName' => 'required',
-        ]);
-         * **/
-
-        Ingredient::create([
-            'user_id'   => Auth::id(),
-            'name'      => $this->ingredientName,
-            'fat'       => $this->fat/100,
-            'calories'  => $this->cal/100,
-            'carbs'     => $this->carb/100,
-            'salt'      => $this->salt/100,
-            'protein'   => $this->protein/100,
-            'sugars'    => $this->sugar/100,
+            'ingredientName' => 'required'
         ]);
 
-        $this->reset('ingredientName', 'fat', 'cal', 'carb', 'salt', 'protein', 'sugar');
-        $this->dispatch('successmessage', 'Ingredient added successfully.');
+        if (Ingredient::where('user_id', Auth::id())->where('name', $this->ingredientName)->count() == 0) {
+            Ingredient::create([
+                'user_id'   => Auth::id(),
+                'name'      => $this->ingredientName,
+                'fat'       => $this->fat/100,
+                'calories'  => $this->cal/100,
+                'carbs'     => $this->carb/100,
+                'salt'      => $this->salt/100,
+                'protein'   => $this->protein/100,
+                'sugars'    => $this->sugar/100,
+            ]);
+            $this->reset('ingredientName', 'fat', 'cal', 'carb', 'salt', 'protein', 'sugar');
+            $this->dispatch('successmessage', 'Ingredient','Ingredient added successfully.');
+        } else {
+            $this->dispatch('successmessage', 'Ingredient', $this->ingredientName.': This name already in use',true);
+        }
+
     }
 
     public function deleteIngredient($id) {
@@ -249,11 +253,12 @@ class Food extends Component
         $this->getIngredients($this->getRecipe->id);
     }
 
-    public $search;
+    public $search, $ingSearch;
 
     public function render()
     {
         $query = Recipe::where('user_id', Auth::id());
+        $ingQuery = Ingredient::where('user_id', Auth::id());
 
         if ($this->search) {
             $query->where(function ($subquery) {
@@ -261,8 +266,14 @@ class Food extends Component
             });
         }
 
+        if ($this->ingSearch) {
+            $ingQuery->where(function ($subquery) {
+                $subquery->where('name', 'like', '%' . $this->ingSearch . '%');
+            });
+        }
+
         return view('livewire.app.food.food', [
-            'ingredientList'    => Ingredient::where('user_id', Auth::id())->get(),
+            'ingredientList'    => $ingQuery->paginate(20),
             'recipeList'        => $query->paginate(20),
         ])->layout('layouts.app');
     }
