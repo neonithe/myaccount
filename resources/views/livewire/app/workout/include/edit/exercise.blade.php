@@ -36,7 +36,7 @@
                     class="border border-gray-600 py-1 px-1 hover:bg-gray-700 rounded-md">
                 <x-app.icons.circle-plus class="h-6 w-6"/>
             </button>
-            <button @click="exAddAl = !woAddAl" x-tooltip="Close add exercise"
+            <button @click="exAddAl = !exAddAl" x-tooltip="Close add exercise"
                     class="border border-gray-600 py-1 px-1 hover:bg-gray-700 rounded-md">
                 <x-app.icons.x class="h-6 w-6"/>
             </button>

@@ -17,6 +17,7 @@ class RecipeSeeder extends Seeder
             'name'      => 'Pannkakor',
             'description' => 'Klassiska svenska pannkakor.',
             'link'      => 'www.google.com',
+            'portion'       => 4,
         ]);
 
         $recipe2 = Recipe::create([
@@ -27,9 +28,18 @@ class RecipeSeeder extends Seeder
             'portion'       => 4,
         ]);
 
+        $recipe3 = Recipe::create([
+            'user_id'       =>1,
+            'name'          => 'Sjömansbiff',
+            'description'   => 'Med god lök.',
+            'link'          => 'www.sjomansbiff.com',
+            'portion'       => 6,
+        ]);
+
         $flour  = Ingredient::create(['user_id'=>1, 'name' => 'Mjöl', 'calories' => 3, 'fat' => 4, 'carbs' => 5, 'sugars' => 6, 'protein' => 2, 'salt' => 0.0003]);
         $milk   = Ingredient::create(['user_id'=>1, 'name' => 'Mjölk', 'calories' => 5, 'fat' => 5, 'carbs' => 2, 'sugars' => 4, 'protein' => 0.00, 'salt' => 0.00]);
         $egg    = Ingredient::create(['user_id'=>1, 'name' => 'Ägg', 'calories' => 3, 'fat' => 1, 'carbs' => 3, 'sugars' => 4, 'protein' => 6, 'salt' => 3]);
+        $sugar  = Ingredient::create(['user_id'=>1, 'name' => 'Socker']);
         $butter = Ingredient::create(['user_id'=>1, 'name' => 'Smör', 'calories' => 7.1700, 'fat' => 0.81, 'carbs' => 0.0006, 'sugars' => 0.0006, 'protein' => 0.0085, 'salt' => 0.0003]);
 
         $recipe->ingredients()->attach($flour->id, ['volume' => 300, 'type_name' => 'g', 'gram' => 100]);
@@ -40,5 +50,7 @@ class RecipeSeeder extends Seeder
         $recipe2->ingredients()->attach($flour->id, ['volume' => 300, 'type_name' => 'g', 'gram' => 100]);
         $recipe2->ingredients()->attach($milk->id, ['volume' => 500, 'type_name' => 'ml', 'gram' => 200]);
         $recipe2->ingredients()->attach($egg->id, ['volume' => 50, 'type_name' => 'g', 'gram' => 300]);
+
+        $recipe3->ingredients()->attach($sugar->id, ['volume' => 10, 'type_name' => 'g', 'gram' => 10]);
     }
 }

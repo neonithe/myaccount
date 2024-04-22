@@ -7,7 +7,7 @@
 
                 <div class="hidden sm:block">
                     <div class="flex justify-end gap-2">
-                        <button @click="showNow = 'showRec'" class="border rounded-md py-1 px-2 text-xs sm:text-sm hover:bg-gray-600">Show recipes</button>
+                        <button @click="showNow = 'showRec', showRecipe = false" class="border rounded-md py-1 px-2 text-xs sm:text-sm hover:bg-gray-600">Show recipes</button>
                         <button @click="showNow = 'showIng'" class="border rounded-md py-1 px-2 text-xs sm:text-sm hover:bg-gray-600">Show ingredients</button>
                         <button @click="showNow = 'addIng'" class="border rounded-md py-1 px-2 text-xs sm:text-sm hover:bg-gray-600">Add ingredient</button>
                         <button @click="showNow = 'addRec'" class="border rounded-md py-1 px-2 text-xs sm:text-sm hover:bg-gray-600">Add recipe</button>

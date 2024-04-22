@@ -97,7 +97,7 @@
                         <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Meeting</div>
                         @foreach ($this->getTodos('meeting') as $item)
                             <div class="flex justify-between text-sm border-b border-gray-600 py-1 @if ($dayName == $item->remind_day) bg-blue-600 @endif px-1 rounded-md">
-                                <div class="tracking-widest">
+                                <div class="tracking-widest truncate">
                                     @if ($item->link)
                                         <a href="{{$item->link}}" target="_blank" class="text-blue-500 hover:underline">{{$item->todo}}</a>
                                     @else
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="flex gap-2">
                                     <div>
-                                        {{$item->remind_day}}
+                                        {{ substr($item->remind_day, 0, 3) }}
                                     </div>
                                     <div>
                                         {{ date('H:i', strtotime($item->remind_time)) }}

@@ -15,7 +15,7 @@ class Food extends Component
 
     public $ingredientName, $fat, $sugar, $carb, $salt, $protein, $cal;
 
-    public $name, $link, $description;
+    public $name, $link, $description, $recipePortion;
     public $ingredients = [];
 
     public $newIngredient, $newVolume, $newType, $newGram;
@@ -23,7 +23,12 @@ class Food extends Component
 
     public $fatCal = 0, $sugarCal = 0, $carbCal = 0, $saltCal = 0, $proteinCal = 0, $calCal = 0;
 
-    public $portion = 4, $recipePortion;
+    public $portion = 4;
+
+    /** Reset Recipe **************************************************************************************************/
+    public function resetRecipe() {
+        $this->getRecipe = null;
+    }
 
     /** Recipe ***************************************************************************************************/
     public function addIngredientToRecipe()
@@ -39,12 +44,18 @@ class Food extends Component
 
     public function saveRecipe()
     {
+        // $name, $link, $description, $recipePortion;
+        $this->validate([
+            'name'      =>  'required',
+            'portion'   =>  'required',
+        ]);
+
         $recipe = Recipe::create([
             'user_id'       => Auth::id(),
             'name'          => $this->name,
             'link'          => $this->link,
             'description'   => $this->description,
-            'portion'       => $this->portion,
+            'portion'       => $this->recipePortion,
         ]);
 
         foreach ($this->ingredients as $ingredient) {

@@ -12,8 +12,12 @@
     </div>
     @foreach ($recipeList as $item)
         <div class="flex justify-between py-2 border-b border-gray-600 px-1">
-            <div><button wire:click="getIngredients({{$item->id}})" @click="showRecipe = true" class="truncate text-blue-400 hover:underline">{{$item->name}}</button></div>
-            <div class="truncate italic hidden sm:block">{{$item->description}}</div>
+            <div>
+                <button wire:click="getIngredients({{$item->id}})" @click="showRecipe = true" class="truncate text-blue-400 hover:underline">{{$item->name}}</button>
+            </div>
+            <div class="truncate italic hidden sm:block">
+                {{$item->description}}
+            </div>
             <div class="flex gap-2">
                 <div class="mt-1">
                     @if ($item->link)
@@ -45,7 +49,8 @@
 
     <div class="block sm:hidden">
         <div x-show="showRecipe">
-            @include('livewire.app.food.include.sm-show-recipe')
+            {{--
+            @include('livewire.app.food.include.sm-show-recipe')--}}
             @include('livewire.app.food.include.add-new-ingredient')
         </div>
     </div>

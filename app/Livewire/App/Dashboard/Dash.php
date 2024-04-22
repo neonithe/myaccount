@@ -40,7 +40,14 @@ class Dash extends Component
     }
 
     public function getTodos($type) {
-        return Todo::where('user_id', Auth::id())->where($type, true)->get();
+        if ($type == 'meeting') {
+            return Todo::where('user_id', Auth::id())
+                ->where($type, true)
+                ->orderByRaw("FIELD(remind_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
+                ->get();
+        } else {
+            return Todo::where('user_id', Auth::id())->where($type, true)->get();
+        }
     }
     public function getTodoReminders() {
         return Todo::where('user_id', Auth::id())->where('done', false)->whereNotNull('remind_date')->get();

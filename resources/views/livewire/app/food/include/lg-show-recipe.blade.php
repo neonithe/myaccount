@@ -36,62 +36,67 @@
             </div>
         </div>
 
-        <div class="mt-4">
-            <div class="border-b border-gray-600 font-bold mb-2">Energy for meal</div>
-            <div class="text-sm grid grid-cols-4">
-                <div class="font-bold">Protein:</div>
-                <div class="font-bold">@if ($proteinCal) {{number_format($proteinCal, 0, ',', ' ')}} g @else - @endif</div>
-                <div class="font-bold">Calories:</div>
-                <div class="font-bold">@if ($proteinCal) {{number_format($calCal, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Fat:</div>
-                <div>@if ($proteinCal) {{number_format($fatCal, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Sugar:</div>
-                <div>@if ($proteinCal) {{number_format($sugarCal, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Carbs:</div>
-                <div>@if ($proteinCal) {{number_format($carbCal, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Salt:</div>
-                <div>@if ($proteinCal) {{number_format($saltCal, 0, ',', ' ')}} g @else - @endif</div>
-            </div>
-        </div>
-        <div class="mt-4 border-b border-gray-700 mb-1 pb-2">
-            <div class="border-b border-gray-600 font-bold mb-2 flex justify-between">
-                <div>Energy per portion</div>
-                <div>
-                    <select wire:change="changePortion($event.target.value)" class="py-0.5 bg-gray-800 border-0 rounded-md text-center">
-                        <option value="1" @if ($getRecipe->portion == 1) selected @endif>1</option>
-                        <option value="2" @if ($getRecipe->portion == 2) selected @endif>2</option>
-                        <option value="3" @if ($getRecipe->portion == 3) selected @endif>3</option>
-                        <option value="4" @if ($getRecipe->portion == 4) selected @endif>4</option>
-                        <option value="5" @if ($getRecipe->portion == 5) selected @endif>5</option>
-                        <option value="6" @if ($getRecipe->portion == 6) selected @endif>6</option>
-                        <option value="7" @if ($getRecipe->portion == 7) selected @endif>7</option>
-                        <option value="8" @if ($getRecipe->portion == 8) selected @endif>8</option>
-                        <option value="9" @if ($getRecipe->portion == 9) selected @endif>9</option>
-                        <option value="10" @if ($getRecipe->portion == 10) selected @endif>10</option>
-                        <option value="11" @if ($getRecipe->portion == 11) selected @endif>11</option>
-                        <option value="12" @if ($getRecipe->portion == 12) selected @endif>12</option>
-                    </select>
+        @if ($getIngredientsList)
+            <div class="mt-4">
+                <div class="border-b border-gray-600 font-bold mb-2">Energy for meal</div>
+                <div class="text-sm grid grid-cols-4">
+                    <div class="font-bold">Protein:</div>
+                    <div class="font-bold">@if ($proteinCal) {{number_format($proteinCal, 0, ',', ' ')}} g @else - @endif</div>
+                    <div class="font-bold">Calories:</div>
+                    <div class="font-bold">@if ($proteinCal) {{number_format($calCal, 0, ',', ' ')}} g @else - @endif</div>
+                    <div>Fat:</div>
+                    <div>@if ($proteinCal) {{number_format($fatCal, 0, ',', ' ')}} g @else - @endif</div>
+                    <div>Sugar:</div>
+                    <div>@if ($proteinCal) {{number_format($sugarCal, 0, ',', ' ')}} g @else - @endif</div>
+                    <div>Carbs:</div>
+                    <div>@if ($proteinCal) {{number_format($carbCal, 0, ',', ' ')}} g @else - @endif</div>
+                    <div>Salt:</div>
+                    <div>@if ($proteinCal) {{number_format($saltCal, 0, ',', ' ')}} g @else - @endif</div>
                 </div>
             </div>
-            <div class="text-sm grid grid-cols-4">
-                <div class="font-bold">Protein:</div>
-                <div class="font-bold">@if ($proteinCal) {{number_format($proteinCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
-                <div class="font-bold">Calories:</div>
-                <div class="font-bold">@if ($proteinCal) {{number_format($calCal/$getRecipe->portion, 0, ',', ' ')}} kcal @else - @endif</div>
-                <div>Fat:</div>
-                <div>@if ($proteinCal) {{number_format($fatCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Sugar:</div>
-                <div>@if ($proteinCal) {{number_format($sugarCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Carbs:</div>
-                <div>@if ($proteinCal) {{number_format($carbCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
-                <div>Salt:</div>
-                <div>@if ($proteinCal) {{number_format($saltCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
+            <div class="mt-4  mb-1 pb-2">
+                <div class="border-b border-gray-600 font-bold mb-2 flex justify-between">
+                    <div>Energy per portion</div>
+                    <div>
+                        <select wire:change="changePortion($event.target.value)" class="py-0.5 bg-gray-800 border-0 rounded-md text-center">
+                            <option value="1" @if ($getRecipe->portion == 1) selected @endif>1</option>
+                            <option value="2" @if ($getRecipe->portion == 2) selected @endif>2</option>
+                            <option value="3" @if ($getRecipe->portion == 3) selected @endif>3</option>
+                            <option value="4" @if ($getRecipe->portion == 4) selected @endif>4</option>
+                            <option value="5" @if ($getRecipe->portion == 5) selected @endif>5</option>
+                            <option value="6" @if ($getRecipe->portion == 6) selected @endif>6</option>
+                            <option value="7" @if ($getRecipe->portion == 7) selected @endif>7</option>
+                            <option value="8" @if ($getRecipe->portion == 8) selected @endif>8</option>
+                            <option value="9" @if ($getRecipe->portion == 9) selected @endif>9</option>
+                            <option value="10" @if ($getRecipe->portion == 10) selected @endif>10</option>
+                            <option value="11" @if ($getRecipe->portion == 11) selected @endif>11</option>
+                            <option value="12" @if ($getRecipe->portion == 12) selected @endif>12</option>
+                        </select>
+                    </div>
+                </div>
+                @if ($getRecipe->portion)
+                    <div class="text-sm grid grid-cols-4">
+                        <div class="font-bold">Protein:</div>
+                        <div class="font-bold">@if ($proteinCal) {{number_format( $proteinCal / $getRecipe->portion , 0, ',', ' ')}} g @else - @endif</div>
+                        <div class="font-bold">Calories:</div>
+                        <div class="font-bold">@if ($proteinCal) {{number_format($calCal/$getRecipe->portion, 0, ',', ' ')}} kcal @else - @endif</div>
+                        <div>Fat:</div>
+                        <div>@if ($proteinCal) {{number_format($fatCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
+                        <div>Sugar:</div>
+                        <div>@if ($proteinCal) {{number_format($sugarCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
+                        <div>Carbs:</div>
+                        <div>@if ($proteinCal) {{number_format($carbCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
+                        <div>Salt:</div>
+                        <div>@if ($proteinCal) {{number_format($saltCal/$getRecipe->portion, 0, ',', ' ')}} g @else - @endif</div>
+                    </div>
+                @endif
             </div>
-        </div>
+        @endif
+
     </div>
     <div class="grow mt-1.5">
 
-        <div class="border-b mb-1 pb-0.5 text-sm flex">
+        <div class="border-b mb-1 pb-0.5 text-sm flex mt-1">
             <div class="grow">Ingredient</div>
             <div>Volume/Gram</div>
         </div>
@@ -125,4 +130,6 @@
     </div>
 
 </div>
-<div class="border-b mt-2"></div>
+<div class="border-b mt-2">
+
+</div>
