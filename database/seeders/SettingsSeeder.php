@@ -5,24 +5,14 @@ namespace Database\Seeders;
 use App\Models\Settings;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class UserSeeder extends Seeder
+class SettingsSeeder extends Seeder
 {
-    protected static ?string $password;
-
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-
-        \App\Models\User::factory()->create([
-            'name' => 'Mattias Andersson',
-            'email' => 'neonithe@gmail.com',
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-
-        ]);
         Settings::create(['user_id' => 1,
             'access'            => 'admin',
 
@@ -36,16 +26,7 @@ class UserSeeder extends Seeder
             'access_link'       => true,
             'access_recipe'     => true,
             'access_workout'    => true,
-        ]);
-
-        \App\Models\User::factory()->create([
-            'name' => 'Martin Zimmerman',
-            'email' => 'martin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-
-        ]);
+            ]);
         Settings::create(['user_id' => 2,
             'access'            => 'admin',
 
@@ -59,15 +40,6 @@ class UserSeeder extends Seeder
             'access_link'       => false,
             'access_recipe'     => false,
             'access_workout'    => false,
-        ]);
-
-        \App\Models\User::factory()->create([
-            'name' => 'Sofia Sonesson',
-            'email' => 'sofia@gmail.com',
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-
         ]);
         Settings::create(['user_id' => 3,
             'access'            => 'admin',

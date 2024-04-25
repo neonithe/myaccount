@@ -29,9 +29,15 @@
             <div class=" font-bold">Description</div>
             <div class="italic mt-1">
                 @if ($getRecipe->description)
-                    <textarea wire:keydown.enter="changeRecipe({{$getRecipe->id}}, 'description', $event.target.value)" rows="2" class="bg-gray-800 rounded-md border-gray-800 w-full px-0.5 py-0.5 -ml-0.5">{{$getRecipe->description}} </textarea>
+                    <textarea
+                        x-data="{ adjustHeight($el) { $el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'; } }"
+                        x-init="adjustHeight($el)"
+                        @input="adjustHeight($event.target)"
+                        wire:keydown.enter="changeRecipe({{$getRecipe->id}}, 'description', $event.target.value)"
+                        class="bg-gray-800 rounded-md border-gray-800 w-full px-0.5 py-0.5 -ml-0.5"
+                    >{{ $getRecipe->description }}</textarea>
                 @else
-                    <textarea wire:keydown.enter="changeRecipe({{$getRecipe->id}}, 'description', $event.target.value)" rows="2" class="bg-gray-800 rounded-md border-gray-800 w-full -ml-0.5" placeholder="There is no description added">{{$getRecipe->description}} </textarea>
+                    <textarea wire:keydown.enter="changeRecipe({{$getRecipe->id}}, 'description', $event.target.value)" rows="3" class="bg-gray-800 rounded-md border-gray-800 w-full -ml-0.5" placeholder="There is no description added">{{$getRecipe->description}} </textarea>
                 @endif
             </div>
         </div>

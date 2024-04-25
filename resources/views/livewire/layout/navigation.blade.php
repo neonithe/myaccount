@@ -28,8 +28,6 @@ new class extends Component
                     </a>
                 </div>
 
-
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
@@ -38,15 +36,26 @@ new class extends Component
                     <x-nav-link :href="route('todo')" :active="request()->routeIs('todo')" wire:navigate>
                         {{ __('ToDo') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('workout')" :active="request()->routeIs('workout')" wire:navigate>
-                        {{ __('Workout') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('food')" :active="request()->routeIs('food')" wire:navigate>
-                        {{ __('Recipe') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('eco')" :active="request()->routeIs('eco')" wire:navigate>
-                        {{ __('Economy') }}
-                    </x-nav-link>
+                    @if ($settings->access_workout)
+                        <x-nav-link :href="route('workout')" :active="request()->routeIs('workout')" wire:navigate>
+                            {{ __('Workout') }}
+                        </x-nav-link>
+                    @endif
+                    @if ($settings->access_recipe)
+                        <x-nav-link :href="route('food')" :active="request()->routeIs('food')" wire:navigate>
+                            {{ __('Recipe') }}
+                        </x-nav-link>
+                    @endif
+                    @if ($settings->access_eco)
+                        <x-nav-link :href="route('eco')" :active="request()->routeIs('eco')" wire:navigate>
+                            {{ __('Economy') }}
+                        </x-nav-link>
+                    @endif
+                    @if ($settings->access_link)
+                        <x-nav-link :href="route('link')" :active="request()->routeIs('link')" wire:navigate>
+                            {{ __('Links') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -81,13 +90,14 @@ new class extends Component
             </div>
 
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <div class="shrink-0 flex justify-between items-center gap-3 pr-4">
+            <div class="-me-2 flex items-center sm:hidden grow">
+                <div class="shrink-0 flex justify-between items-center gap-3 pr-4 grow">
                     <a href="{{route('dashboard')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.home class="h-6 w-6" /></a>
                     <a href="{{route('todo')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.circle-check class="h-6 w-6" /></a>
                     <a href="{{route('workout')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.burn class="h-6 w-6" /></a>
                     <a href="{{route('food')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.recipe class="h-6 w-6" /></a>
                     <a href="{{route('eco')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.credit-card class="h-6 w-6" /></a>
+                    <a href="{{route('link')}}" class="border rounded-md py-1 px-1 dark:text-white"><x-app.icons.link class="h-6 w-6" /></a>
                 </div>
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">

@@ -5,23 +5,37 @@ namespace App\Livewire\App\Dashboard;
 use App\Models\econmony\CryptoInvestment;
 use App\Models\econmony\Expense;
 use App\Models\econmony\Income;
+use App\Models\link\Cat;
+use App\Models\link\Link;
+use App\Models\link\SpeedButton;
+use App\Models\link\Tag;
 use App\Models\recipe\Ingredient;
 use App\Models\recipe\Recipe;
+use App\Models\Settings;
 use App\Models\todo\Todo;
 use App\Models\workout\Workout;
 use Carbon\Carbon;
+use DateInterval;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use GuzzleHttp\Client;
+use Livewire\WithPagination;
+use Illuminate\Http\Request;
 
 class Dash extends Component
 {
+    use WithPagination;
+
     // MyTodo
     public $pausedCount, $prioCount, $remindCount, $regularCount, $allCount, $meetingCount, $contactCount, $doneCount;
     // Crypto
     public $cryptoList = [];
 
     public $dayName;
+
+    public $showLinks = 5, $search, $filterTag, $filterCat, $filterFav;
+
 
     /** MyToDo ********************************************************************************************************/
     public function getTodoCount() {
@@ -45,6 +59,14 @@ class Dash extends Component
                 ->where($type, true)
                 ->orderByRaw("FIELD(remind_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
                 ->get();
+        } else if($type == 'todo') {
+            return Todo::where('user_id', Auth::id())
+                ->where('done', false)
+                ->whereNull('remind_date')
+                ->whereNull('repeat')
+                ->where('notice', false)
+                ->where('paused', false)
+                ->where('meeting', false)->get();
         } else {
             return Todo::where('user_id', Auth::id())->where($type, true)->where('done', false)->get();
         }
@@ -121,12 +143,183 @@ class Dash extends Component
         return Expense::where('user_id', Auth::id())->sum('sum');
     }
 
+    /** Links *********************************************************************************************************/
+    public function getTag() {
+        return Tag::where('user_id', Auth::id())->get();
+    }
+
+    public function getCat() {
+        return Cat::where('user_id', Auth::id())->get();
+    }
+
+    public function changeFav($id) {
+        $data = Link::findOrFail($id);
+        ($data->fav) ? $data->fav = false : $data->fav = true;
+        $data->save();
+    }
+
+    public function changeLink($id, $type, $value, $change) {
+        $data = Link::findOrFail($id);
+        $data->$type = $value;
+        $data->save();
+
+        $this->dispatch('successmessage', 'Links', $change.' is now changed.' );
+        $this->render();
+    }
+
+    /** Speedbuttons **************************************************************************************************/
+    public function getButtonLink($id) {
+        $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first();
+        (!$data) ? $res = null : $res = Link::findOrfail($data->link_id)->id;
+        return $res;
+    }
+
+    public function getOrder($id) {
+        if ( $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first() ) {
+            return $data->order;
+        } else {
+            return 0;
+        }
+    }
+
+    public function changeOrder($id, $orderNr) {
+        $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first();
+        $data->order = $orderNr;
+        $data->save();
+        $this->dispatch('successmessage', 'Link button', 'Order has been changed.' );
+    }
+
+    public function setButtonLink($id, $linkId) {
+        if (!$linkId) {
+            SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first()->delete();
+            $this->dispatch('successmessage', 'Link button', 'Button link is now removed.' );
+        } else {
+            if ( $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first() ) {
+                $data->link_id = $linkId;
+                $data->save();
+                $this->dispatch('successmessage', 'Link button', 'Button link is now changed.' );
+            } else {
+                SpeedButton::create(['user_id' => Auth::id(), 'button_id' => $id, 'link_id' => $linkId, 'order' => 1]);
+                $this->dispatch('successmessage', 'Link button', 'Button link is now set.' );
+            }
+        }
+    }
+
+    public function getLink($id) {
+        return Link::findOrFail($id)->link;
+    }
+
+    public function buttonAlign($value) {
+        $data = Settings::where('user_id', Auth::id())->first();
+        $data->button_align = $value;
+        $data->save();
+        $this->render();
+    }
+
+    /** Cycle *********************************************************************************************************/
+    public function generateCycleList() {
+        $start_date = '2024-03-25';  // Vi antar att detta är en måndag
+        $cycle_length_in_weeks = 2;
+        $duration_in_months = 6;
+        $nr_cycle = 13;  // Vi börjar räkna från cykel 1
+
+        $cycles = [];
+        $start_date = new DateTime($start_date);
+        $end_date = clone $start_date;
+        $end_date->modify("+{$duration_in_months} months");
+        $cycle_length = new DateInterval("P{$cycle_length_in_weeks}W");
+
+        while ($start_date < $end_date) {
+            $cycle_end = clone $start_date;
+            $cycle_end->add($cycle_length)->modify('-3 days');  // Flytta till fredagen
+
+            // Lägger till cykeln till listan
+            $cycles[] = [
+                'Startdatum' => $start_date->format('Y-m-d'),
+                'Slutdatum' => $cycle_end->format('Y-m-d'),
+                'Cykel nr' => $nr_cycle,
+            ];
+
+            // Uppdatera startdatum för nästa cykel
+            $start_date->add($cycle_length);
+            $nr_cycle++;
+        }
+
+        return $cycles;
+    }
+
+    public function getCurrentCycle() {
+        $today = new DateTime(); // Dagens datum
+        $start_date = new DateTime('2024-03-25');
+        $cycle_length_in_weeks = 2;
+        $nr_cycle = 13;
+        $cycle_length = new DateInterval("P{$cycle_length_in_weeks}W");
+
+        // Räkna ut vilket cykelnummer det är baserat på startdatum och dagens datum
+        while ($start_date <= $today) {
+            $cycle_end = clone $start_date;
+            $cycle_end->add($cycle_length)->modify('-3 days'); // Slutdatum är fredagen
+
+            if ($today >= $start_date && $today <= $cycle_end) {
+                // Vi har hittat den nuvarande cykeln
+                return [
+                    'Dagens datum' => $today->format('Y-m-d'),
+                    'Cykel nr' => $nr_cycle,
+                    'Cykel Start' => $start_date->format('Y-m-d'),
+                    'Cykel Slut' => $cycle_end->format('Y-m-d'),
+                ];
+            }
+
+            // Gå till nästa cykel
+            $start_date->add($cycle_length);
+            $nr_cycle++;
+        }
+
+        // Om ingen cykel matchade, returnera null eller någon indikation på att cykeln inte pågår
+        return null;
+    }
+
+
+    /** Settings ******************************************************************************************************/
+    public function changeSettings($id, $type, $value) {
+        $data = Settings::findOrFail($id);
+        $data->$type = $value;
+        $data->save();
+    }
+
+
     public function render()
     {
         $this->getTodoCount();
         $this->dayName  = Carbon::now()->locale('en')->isoFormat('dddd');
 
+        $query = Link::where('user_id', Auth::id())->orderBy('fav', 'desc');
+
+        if ($this->search) {
+            $query->where(function ($subquery) {
+                $subquery->where('name', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        if ($this->filterTag) {$query->where('tag_id', $this->filterTag);}
+        if ($this->filterCat) {$query->where('cat_id', $this->filterCat);}
+        if ($this->filterFav == 'fav') {
+            $query->where('fav', true);
+        } else if($this->filterFav == 'nofav') {
+            $query->where('fav', false);
+        }
+
+
         return view('livewire.app.dashboard.dash',[
+            'settings'      =>  Settings::where('user_id', Auth::id())->first(),
+
+            'cats'          =>  Cat::where('user_id', Auth::id())->get(),
+            'tags'          =>  Tag::where('user_id', Auth::id())->get(),
+            'links'         =>  $query->paginate($this->showLinks),
+            'allLinks'      =>  \App\Models\link\Link::where('user_id', Auth::id())->get(),
+            'buttons'       =>  SpeedButton::where('user_id', Auth::id())->orderBy('order', 'ASC')->get(),
+
+            'workoutDay'    =>  Workout::where('user_id', Auth::id())->where('day', $this->dayName)->get(),
             'workouts'      =>  Workout::where('user_id', Auth::id())->get(),
             'recipeCount'   =>  Recipe::where('user_id', Auth::id())->count(),
             'ingCount'      =>  Ingredient::where('user_id', Auth::id())->count(),

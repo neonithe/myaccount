@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
     // MyEco
     Route::get('/eco', \App\Livewire\App\Economy\Ecoonomy::class)->name('eco');
 
+    // Links
+    Route::get('/link', \App\Livewire\App\Link\Link\Link::class)->name('link');
+
 });
 
 require __DIR__.'/auth.php';
