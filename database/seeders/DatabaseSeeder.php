@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(RecipeSeeder::class);
         //$this->call(EcoSeeder::class);
         //$this->call(CryptoSeeder::class);
-        $this->call(LinkSeeder::class);
-        $this->call(SettingsSeeder::class);
+        //$this->call(LinkSeeder::class);
+        //$this->call(SettingsSeeder::class);
     }
 }

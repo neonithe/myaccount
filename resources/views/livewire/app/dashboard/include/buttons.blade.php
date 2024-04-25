@@ -4,21 +4,20 @@
             <div class="flex gap-2">
                 <div class="border px-1 py-1 rounded-md">
                     @switch($button->button_id)
-                        @case(0) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.mail class="h-6 w-6"/></a> @break
-                        @case(1) <x-app.icons.mail class="h-6 w-6"/> @break
-                        @case(2) <x-app.icons.calender class="h-6 w-6"/> @break
-                        @case(3) <x-app.icons.chip class="h-6 w-6"/> @break
-                        @case(4) <x-app.icons.document class="h-6 w-6"/> @break
+                        @case(1) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.mail class="h-6 w-6"/></a> @break
+                        @case(2) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.calender class="h-6 w-6"/></a> @break
+                        @case(3) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.chip class="h-6 w-6"/></a> @break
+                        @case(4) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.document class="h-6 w-6"/></a> @break
 
-                        @case(5) <x-app.icons.clock class="h-6 w-6"/> @break
-                        @case(6) <x-app.icons.folder class="h-6 w-6"/> @break
-                        @case(7) <x-app.icons.office class="h-6 w-6"/> @break
-                        @case(8) <x-app.icons.paperclip class="h-6 w-6"/> @break
+                        @case(5) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.clock class="h-6 w-6"/></a> @break
+                        @case(6) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.folder class="h-6 w-6"/></a> @break
+                        @case(7) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.office class="h-6 w-6"/></a> @break
+                        @case(8) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.paperclip class="h-6 w-6"/></a> @break
 
-                        @case(9) <x-app.icons.phone class="h-6 w-6"/> @break
-                        @case(10) <x-app.icons.server class="h-6 w-6"/> @break
-                        @case(11) <x-app.icons.tools class="h-6 w-6"/> @break
-                        @case(12) <x-app.icons.credit-card class="h-6 w-6"/> @break
+                        @case(9) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.phone class="h-6 w-6"/></a> @break
+                        @case(10) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.server class="h-6 w-6"/></a> @break
+                        @case(11) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.tools class="h-6 w-6"/></a> @break
+                        @case(12) <a href="{{$this->getLink($button->link_id)}}" target="_blank"><x-app.icons.credit-card class="h-6 w-6"/></a> @break
                     @endswitch
                 </div>
             </div>
