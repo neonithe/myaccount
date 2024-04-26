@@ -63,6 +63,7 @@ class Dash extends Component
         if ($type == 'meeting') {
             return Todo::where('user_id', Auth::id())
                 ->where($type, true)
+                ->where('done', false)
                 ->orderByRaw("FIELD(remind_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')")
                 ->get();
         } else if($type == 'todo') {
