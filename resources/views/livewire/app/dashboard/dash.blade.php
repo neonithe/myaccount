@@ -1,9 +1,10 @@
-<div x-data="{buttonSettings: false, adminSettings: false}" class="pb-24">
+<div x-data="{buttonSettings: false, adminSettings: false, notes: false}" class="pb-24">
     <livewire:app.top.top-display :title="'Dashboard'"/>
 
     @include('livewire.app.dashboard.include.buttons')
     @include('livewire.app.dashboard.include.admin-settings')
     @include('livewire.app.dashboard.include.button-settings')
+    @include('livewire.app.dashboard.include.note')
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4 mt-1">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

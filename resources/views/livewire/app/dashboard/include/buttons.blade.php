@@ -30,6 +30,13 @@
                 <x-app.icons.lock class="h-6 w-6"/>
             </button>
         @endif
+        @if ($note)
+            <div class="ml-4">
+                <button @click="notes = !notes" x-tooltip="Notes" class="border px-1 py-1 rounded-md">
+                    <x-app.icons.command-line class="h-6 w-6"/>
+                </button>
+            </div>
+        @endif
     </div>
 </div>
 

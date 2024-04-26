@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     // Links
     Route::get('/link', \App\Livewire\App\Link\Link\Link::class)->name('link');
 
+    // Notes
+    Route::get('/notes', \App\Livewire\App\Note\SmallNotes::class)->name('note');
+
 });
 
 require __DIR__.'/auth.php';

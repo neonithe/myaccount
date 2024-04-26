@@ -1,6 +1,6 @@
 <div class="flex grow">
     <div class="grow">
-        <input wire:keydown.enter="changeToDo({{ $item->id }}, $event.target.value)" type="text" value="{{ $item->todo }}" class="w-full py-1 px-2 rounded-md text-sm w-full border border-white dark:text-white dark:bg-gray-800 dark:border-gray-800">
+        <input wire:keydown.enter="changeToDo({{ $item->id }}, $event.target.value, 'todo')" type="text" value="{{ $item->todo }}" class="w-full py-1 px-2 rounded-md text-sm w-full border border-white dark:text-white dark:bg-gray-800 dark:border-gray-800">
     </div>
 
     <div x-show="!moreinfo" class=" flex">

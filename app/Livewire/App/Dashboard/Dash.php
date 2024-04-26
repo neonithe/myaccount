@@ -9,6 +9,7 @@ use App\Models\link\Cat;
 use App\Models\link\Link;
 use App\Models\link\SpeedButton;
 use App\Models\link\Tag;
+use App\Models\Note;
 use App\Models\recipe\Ingredient;
 use App\Models\recipe\Recipe;
 use App\Models\Settings;
@@ -36,6 +37,11 @@ class Dash extends Component
 
     public $showLinks = 5, $search, $filterTag, $filterCat, $filterFav;
 
+    public $note;
+
+    public function mount() {
+        $this->note = Note::where('user_id', Auth::id())->where('firstpage', true)->first();
+    }
 
     /** MyToDo ********************************************************************************************************/
     public function getTodoCount() {
@@ -220,6 +226,26 @@ class Dash extends Component
         return Link::findOrFail($id)->name;
     }
 
+    /** Notes *********************************************************************************************************/
+    public function changeNote($id, $type, $value) {
+        $data = Note::findOrFail($id);
+        $data->$type = $value;
+        $data->save();
+
+        $this->dispatch('successmessage', 'Note', 'Note change successfully.');
+        $this->mount();
+        $this->render();
+    }
+
+    public function timeStamp() {
+        $note = Note::findOrFail($this->note->id);
+        $getNote = $note->note;
+        $update = $getNote.' '.Carbon::now()->toDateTimeString().' ';
+        $note->note = $update;
+        $note->save();
+        $this->mount();
+        $this->render();
+    }
 
     /** Settings ******************************************************************************************************/
     public function changeSettings($id, $type, $value) {
@@ -227,7 +253,6 @@ class Dash extends Component
         $data->$type = $value;
         $data->save();
     }
-
 
     public function render()
     {
