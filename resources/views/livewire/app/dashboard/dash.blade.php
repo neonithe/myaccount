@@ -197,6 +197,9 @@
                                     <div>
                                         {{ date('H:i', strtotime($item->remind_time)) }}
                                     </div>
+                                    <div>
+                                        <button wire:click="check({{$item->id}})" class="border rounded-md px-0.5 py-0.5 hover:bg-green-600"><x-app.icons.check class="h-3 w-3" /></button>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -213,7 +216,11 @@
                                         <div @if ($item->comment) x-tooltip="{{$item->comment}}" class="cursor-pointer" @endif >{{$item->todo}}</div>
                                     @endif
                                 </div>
-                                <div></div>
+                                <div>
+                                    <div>
+                                        <button wire:click="check({{$item->id}})" class="border rounded-md px-0.5 py-0.5 hover:bg-green-600"><x-app.icons.check class="h-3 w-3" /></button>
+                                    </div>
+                                </div>
                             </div>
                         @endforeach
                     </div>
