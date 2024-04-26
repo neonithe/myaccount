@@ -31,7 +31,7 @@
                             @foreach ($workoutsShow as $workout)
                                 <div class="py-0.5 flex justify-between">
                                     <div class="grow">
-                                        <button wire:click="selectWorkout({{$workout->id}})" @click="showWo = false" class="px-2 py-0.5 border rounded-md border-gray-600 hover:bg-gray-700 w-full">{{$workout->workout_set}}</button>
+                                        <button wire:click="selectWorkout({{$workout->id}})" @click="showWo = false" class="px-2 py-0.5 border rounded-md border-gray-600 hover:bg-gray-700 w-full">{{$workout->workout_set}} ({{$workout->day}})</button>
                                     </div>
                                 </div>
                             @endforeach
@@ -73,7 +73,7 @@
         @foreach ($workoutsShow as $workout)
             <div class="py-0.5 flex justify-between">
                 <div class="grow">
-                    <button wire:click="selectWorkout({{$workout->id}})" @click="showWo = false" class="px-2 py-0.5 border rounded-md border-gray-600 hover:bg-gray-700 w-full">{{$workout->workout_set}}</button>
+                    <button wire:click="selectWorkout({{$workout->id}})" @click="showWo = false" class="px-2 py-0.5 border rounded-md border-gray-600 hover:bg-gray-700 w-full">{{$workout->workout_set}} ({{$workout->day}})</button>
                 </div>
             </div>
         @endforeach
