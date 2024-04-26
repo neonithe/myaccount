@@ -216,67 +216,8 @@ class Dash extends Component
         $this->render();
     }
 
-    /** Cycle *********************************************************************************************************/
-    public function generateCycleList() {
-        $start_date = '2024-03-25';  // Vi antar att detta är en måndag
-        $cycle_length_in_weeks = 2;
-        $duration_in_months = 6;
-        $nr_cycle = 13;  // Vi börjar räkna från cykel 1
-
-        $cycles = [];
-        $start_date = new DateTime($start_date);
-        $end_date = clone $start_date;
-        $end_date->modify("+{$duration_in_months} months");
-        $cycle_length = new DateInterval("P{$cycle_length_in_weeks}W");
-
-        while ($start_date < $end_date) {
-            $cycle_end = clone $start_date;
-            $cycle_end->add($cycle_length)->modify('-3 days');  // Flytta till fredagen
-
-            // Lägger till cykeln till listan
-            $cycles[] = [
-                'Startdatum' => $start_date->format('Y-m-d'),
-                'Slutdatum' => $cycle_end->format('Y-m-d'),
-                'Cykel nr' => $nr_cycle,
-            ];
-
-            // Uppdatera startdatum för nästa cykel
-            $start_date->add($cycle_length);
-            $nr_cycle++;
-        }
-
-        return $cycles;
-    }
-
-    public function getCurrentCycle() {
-        $today = new DateTime(); // Dagens datum
-        $start_date = new DateTime('2024-03-25');
-        $cycle_length_in_weeks = 2;
-        $nr_cycle = 13;
-        $cycle_length = new DateInterval("P{$cycle_length_in_weeks}W");
-
-        // Räkna ut vilket cykelnummer det är baserat på startdatum och dagens datum
-        while ($start_date <= $today) {
-            $cycle_end = clone $start_date;
-            $cycle_end->add($cycle_length)->modify('-3 days'); // Slutdatum är fredagen
-
-            if ($today >= $start_date && $today <= $cycle_end) {
-                // Vi har hittat den nuvarande cykeln
-                return [
-                    'Dagens datum' => $today->format('Y-m-d'),
-                    'Cykel nr' => $nr_cycle,
-                    'Cykel Start' => $start_date->format('Y-m-d'),
-                    'Cykel Slut' => $cycle_end->format('Y-m-d'),
-                ];
-            }
-
-            // Gå till nästa cykel
-            $start_date->add($cycle_length);
-            $nr_cycle++;
-        }
-
-        // Om ingen cykel matchade, returnera null eller någon indikation på att cykeln inte pågår
-        return null;
+    public function getLinkName($id) {
+        return Link::findOrFail($id)->name;
     }
 
 

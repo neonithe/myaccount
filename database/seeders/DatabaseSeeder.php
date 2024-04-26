@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         //$this->call(CryptoSeeder::class);
         //$this->call(LinkSeeder::class);
         //$this->call(SettingsSeeder::class);
+
     }
 }
