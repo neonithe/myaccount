@@ -128,6 +128,7 @@ class Dash extends Component
         $this->todoItem->save();
         $this->editModal    = false;
         $this->dispatch('successmessage', 'Todo', 'Todo is now updated.' );
+        $this->render();
     }
 
     public function openEdit($id) {
@@ -136,6 +137,7 @@ class Dash extends Component
         $this->editTodo = $this->todoItem->todo;
         $this->editLink = $this->todoItem->link;
         $this->editComment = $this->todoItem->comment;
+        $this->render();
     }
 
     public function cleanModal() {
@@ -144,18 +146,21 @@ class Dash extends Component
         $this->editComment  = null;
         $this->editModal    = false;
         $this->todoItem     = null;
+        $this->render();
     }
 
     public function editTodoPrio() {
         ($this->todoItem->notice) ? $this->todoItem->notice = false : $this->todoItem->notice = true;
         $this->todoItem->save();
         $this->editModal = false;
+        $this->render();
     }
 
     public function editTodoPrivate() {
         ($this->todoItem->private) ? $this->todoItem->private = false : $this->todoItem->private = true;
         $this->todoItem->save();
         $this->editModal = false;
+        $this->render();
     }
 
     /** Crypto ********************************************************************************************************/

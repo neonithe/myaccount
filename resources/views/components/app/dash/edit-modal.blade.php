@@ -26,7 +26,7 @@
                 x-on:click="editModal = false"
                 class="relative flex min-h-screen items-center justify-center p-4"
             >
-                <div x-on:click.stop x-trap.noscroll.inert="editModal" class="relative w-full max-w-xl overflow-y-auto rounded-xl bg-gray-700 p-2 shadow-lg border border-gray-400">
+                <div x-on:click.stop class="relative w-full max-w-xl overflow-y-auto rounded-xl bg-gray-700 p-2 shadow-lg border border-gray-400">
                     <div>
                         <div class="flex gap-2">
                             <div class="grow">
