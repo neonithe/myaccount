@@ -49,8 +49,8 @@
 
     <div class="block sm:hidden">
         <div x-show="showRecipe">
-            {{--
-            @include('livewire.app.food.include.sm-show-recipe')--}}
+            {{----}}
+            @include('livewire.app.food.include.sm-show-recipe')
             @include('livewire.app.food.include.add-new-ingredient')
         </div>
     </div>

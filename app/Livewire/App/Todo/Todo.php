@@ -14,7 +14,7 @@ class Todo extends Component
     public $pages = 8;
 
     public $todo, $remind_date, $link, $comment, $repeat, $time, $day;
-    public $setPrio = false, $setContact = false, $setMeeting = false;
+    public $setPrio = false, $setContact = false, $setMeeting = false, $setPrivate = false;
     public $search;
 
     public $paused = false, $prio = false, $remind = null, $regular = true, $meeting = false, $contact = false;
@@ -23,7 +23,8 @@ class Todo extends Component
 
     /** Reset *********************************************************************************************************/
     public function resetAll() {
-        $this->remind_date = null; $this->setPrio = false; $this->todo = null; $this->setContact = false; $this->setMeeting = false;
+        $this->remind_date = null; $this->setPrio = false; $this->todo = null; $this->setContact = false;
+        $this->setMeeting = false; $this->setPrivate = false;
         $this->dispatch('update-todo-count');
     }
 
@@ -38,6 +39,8 @@ class Todo extends Component
             ($this->setContact == false) ? $this->setContact = true : $this->setContact = false;
         } else if ($type == 'meeting') {
             ($this->setMeeting == false) ? $this->setMeeting = true : $this->setMeeting = false;
+        } else if ($type == 'private') {
+            ($this->setPrivate == false) ? $this->setPrivate = true : $this->setPrivate = false;
         } else {
             ($this->setPrio == false) ? $this->setPrio = true : $this->setPrio = false;
         }
@@ -58,6 +61,7 @@ class Todo extends Component
             'notice'      => $this->setPrio,
             'meeting'     => $this->setMeeting,
             'contact'     => $this->setContact,
+            'private'     => $this->setPrivate,
 
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,
@@ -81,6 +85,7 @@ class Todo extends Component
             'notice'      => $this->setPrio,
             'meeting'     => $this->setMeeting,
             'contact'     => $this->setContact,
+            'private'     => $this->setPrivate,
 
             'repeat'      => ($this->remind_date != null) ? null : $this->repeat,
             'remind_time' => $this->time,

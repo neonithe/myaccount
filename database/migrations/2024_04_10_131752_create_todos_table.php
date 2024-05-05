@@ -34,6 +34,9 @@ return new class extends Migration
             $table->boolean('meeting')->default(false);
             $table->boolean('contact')->default(false);
 
+            //Type of mytodo
+            $table->boolean('private')->default(false);
+
             $table->date('done_date')->nullable();
             $table->timestamps();
         });

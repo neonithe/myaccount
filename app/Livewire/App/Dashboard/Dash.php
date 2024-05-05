@@ -39,6 +39,10 @@ class Dash extends Component
 
     public $note;
 
+    // Edit mytodo
+    public $editTodo, $editComment, $editLink;
+    public $editModal = false, $todoItem;
+
     public function mount() {
         $this->note = Note::where('user_id', Auth::id())->where('firstpage', true)->first();
     }
@@ -73,6 +77,7 @@ class Dash extends Component
                 ->whereNull('repeat')
                 ->where('notice', false)
                 ->where('paused', false)
+                ->where('contact', false)
                 ->where('meeting', false)->get();
         } else {
             return Todo::where('user_id', Auth::id())->where($type, true)->where('done', false)->get();
@@ -110,6 +115,47 @@ class Dash extends Component
         $data->done = true;
         $data->done_date = date('Y-m-d');
         $data->save();
+    }
+
+    /** Edit todo ******/
+    public function updateTodo() {
+        $this->validate([
+            'editTodo'      =>  'required',
+        ]);
+        $this->todoItem->todo     = $this->editTodo;
+        $this->todoItem->link     = $this->editLink;
+        $this->todoItem->comment  = $this->editComment;
+        $this->todoItem->save();
+        $this->editModal    = false;
+        $this->dispatch('successmessage', 'Todo', 'Todo is now updated.' );
+    }
+
+    public function openEdit($id) {
+        $this->todoItem = Todo::findOrFail($id);
+        $this->editModal = true;
+        $this->editTodo = $this->todoItem->todo;
+        $this->editLink = $this->todoItem->link;
+        $this->editComment = $this->todoItem->comment;
+    }
+
+    public function cleanModal() {
+        $this->editTodo     = null;
+        $this->editLink     = null;
+        $this->editComment  = null;
+        $this->editModal    = false;
+        $this->todoItem     = null;
+    }
+
+    public function editTodoPrio() {
+        ($this->todoItem->notice) ? $this->todoItem->notice = false : $this->todoItem->notice = true;
+        $this->todoItem->save();
+        $this->editModal = false;
+    }
+
+    public function editTodoPrivate() {
+        ($this->todoItem->private) ? $this->todoItem->private = false : $this->todoItem->private = true;
+        $this->todoItem->save();
+        $this->editModal = false;
     }
 
     /** Crypto ********************************************************************************************************/
@@ -253,6 +299,10 @@ class Dash extends Component
         $data = Settings::findOrFail($id);
         $data->$type = $value;
         $data->save();
+    }
+
+    public function test() {
+        $this->dispatch('runloading');
     }
 
     public function render()

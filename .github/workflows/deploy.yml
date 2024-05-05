@@ -51,7 +51,7 @@ jobs:
 
       - name: Run Laravel Migrations
         run: |
-          ssh -i id_rsa 54o9fj@ssh.loopia.se "cd /www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount && php artisan migrate"
+          ssh -i id_rsa 54o9fj@ssh.loopia.se "cd /www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount && php artisan migrate:fresh"
       - name: Seed database
         run: |
           ssh -i id_rsa 54o9fj@ssh.loopia.se "cd /www/webvol22/2m/6jsch4yupc221pp/neonithe.se/myaccount && php artisan db:seed"

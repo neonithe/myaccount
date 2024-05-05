@@ -37,11 +37,11 @@
         @if ($getIngredientsList)
             @foreach ($getIngredientsList as $item)
 
-                <div x-data="{showData: false, editData: false}" class="border-b border-gray-600 py-1">
+                <div x-data="{showData: false, editData: false}" class="border-b border-gray-600 py-2">
                     <div class="grid grid-cols-2">
                         <div>{{$item->name}}</div>
                         <div class="grid grid-cols-2">
-                            <div>{{$item->pivot->volume}} {{$item->pivot->type_name}}</div>
+                            <div>{{ rtrim(rtrim(number_format($item->pivot->volume, 1, ',', ' '), '0'), ',') }} {{$item->pivot->type_name}}</div>
                             <div class="text-end">
                                 <button @click="editData = !editData" class="text-blue-500 underline font-bold border rounded-md border-blue-500 px-0.5 py-0.5"><x-app.icons.edit class="h-4 w-4"/></button>
                                 <button @click="showData = !showData" class="text-blue-500 underline font-bold border rounded-md border-blue-500 px-0.5 py-0.5"><x-app.icons.mag class="h-4 w-4"/></button>
@@ -50,7 +50,7 @@
                         <div x-show="editData" class="flex gap-1 w-full col-span-2">
                             <div class="flex gap-1 py-1 grow">
                                 <div class="grow">
-                                    <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'volume', $event.target.value)" type="text" value="{{$item->pivot->volume}}" class="bg-gray-800 w-full py-1 px-1 text-center rounded-md border-gray-700">
+                                    <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'volume', $event.target.value)" type="text" value="{{number_format($item->pivot->volume, 1, ',', ' ')}}" class="bg-gray-800 w-full py-1 px-1 text-center rounded-md border-gray-700">
                                 </div>
                                 <div class="grow">
                                     <input wire:keydown.enter="changeData({{$getRecipe->id}},{{$item->id}}, 'type_name', $event.target.value)" type="text" value="{{$item->pivot->type_name}}" class="bg-gray-800 w-12 py-1 px-1 text-center rounded-md border-gray-700">

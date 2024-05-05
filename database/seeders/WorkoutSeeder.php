@@ -25,7 +25,8 @@ class WorkoutSeeder extends Seeder
         WorkoutArea::create(['name'=>'Rygg/Ben']); //8
         WorkoutArea::create(['name'=>'Rygg']); //9
 
-        Workout::create(['user_id'=>1, 'workout_set'=>'Monday Leg', 'day'=>'Monday']);
+        Workout::create(['user_id'=>1, 'workout_set'=>'Krav maga', 'day'=>'Monday']);
+        Workout::create(['user_id'=>1, 'workout_set'=>'Krav maga', 'day'=>'Wednesday']);
 
         Exercises::create(['user_id'=>1, 'exercise'=>'Armhävningar', 'area_id'=>1]);
         Exercises::create(['user_id'=>1, 'exercise'=>'Situps', 'area_id'=>7]);

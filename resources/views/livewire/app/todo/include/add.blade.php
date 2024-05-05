@@ -58,6 +58,12 @@
                         <x-app.icons.phone class="h-6 w-6" />
                     </button>
                 </div>
+                <div class="pr-3">
+                    <button wire:click="toggleStates('private')" @if ($setPrivate) x-tooltip="Remove private" @else x-tooltip="Set as private" @endif
+                    class="border border-white text-white @if ($setPrivate) bg-green-600 hover:bg-green-700 @else hover:bg-blue-700 @endif p-1 rounded-md">
+                        <x-app.icons.fingerprint class="h-6 w-6" />
+                    </button>
+                </div>
                 @if ($setPrio)
                     <div>
                         <button wire:click="toggleStates('prio')" x-tooltip="Remove prio" class="border border-red-600 text-red-600 bg-red-100 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 hover:border-gray-300 text-gray-900 dark:text-white dark:bg-gray-700">
