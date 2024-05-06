@@ -40,10 +40,10 @@
                             </div>
                         </div>
                         <div class="grow mt-2">
-                            <input wire:model="editLink" type="text" class="bg-gray-700 py-0.5 text-base rounded-md w-full border-gray-600 font-bold" @if (!$editLink) placeholder="No link" @endif>
+                            <input wire:model="editLink" type="text" class="text-sm bg-gray-700 py-0.5 text-base rounded-md w-full border-gray-600 font-bold" @if (!$editLink) placeholder="No link" @endif>
                         </div>
                         <div class="mt-2">
-                            <textarea wire:model="editComment" rows="5" class="bg-gray-700 py-0.5 text-base rounded-md w-full border-gray-600" @if (!$editComment) placeholder="No comment" @endif></textarea>
+                            <textarea wire:model="editComment" rows="5" class="text-sm bg-gray-700 py-0.5 text-base rounded-md w-full border-gray-600" @if (!$editComment) placeholder="No comment" @endif></textarea>
                         </div>
                         <div class="flex justify-end gap-1">
                             <button wire:click="updateTodo" class="border rounded-md py-1 px-1 hover:bg-blue-600">Save</button>
