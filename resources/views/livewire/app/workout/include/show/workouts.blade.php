@@ -37,7 +37,7 @@
                             @endforeach
                         </div>
                         <div class="grow">
-                            <button @click="showWo = !showWo" class="w-full uppercase tracking-widest inline-flex text-center justify-center py-1">
+                            <button @click="showWo = !showWo" class="w-full uppercase tracking-widest inline-flex text-center justify-center py-3">
                                 workouts
                                 <div x-show="showWo" class="mt-1 pl-2">
                                     <x-app.icons.arrow-down class="h-4 w-4"/>

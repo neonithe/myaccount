@@ -57,37 +57,49 @@ class TopDisplay extends Component
         return $cycles;
     }
 
-    public function getCurrentCycle() {
-        // Get data from DB
-        $today = new DateTime(); // Dagens datum
-        $start_date = new DateTime('2024-03-25');
-        $cycle_length_in_weeks = $this->getSettings()->length_cycle;
-        $nr_cycle = $this->getSettings()->nr_cycle;
+    public function getCurrentCycle()
+    {
+        // Hämta inställningar från databasen
+        $today = new DateTime('2024-05-06'); // Dagens datum
+        $settings = $this->getSettings();
+        $start_date = new DateTime($settings->start_cycle);
+        $cycle_length_in_weeks = $settings->length_cycle;
+        $initial_cycle_nr = $settings->nr_cycle;
 
+        // Skapa ett DateInterval baserat på cykellängden
         $cycle_length = new DateInterval("P{$cycle_length_in_weeks}W");
 
-        // Räkna ut vilket cykelnummer det är baserat på startdatum och dagens datum
-        while ($start_date <= $today) {
-            $cycle_end = clone $start_date;
-            $cycle_end->add($cycle_length)->modify('-3 days'); // Slutdatum är fredagen
+        // Räkna ut antalet veckor (cykler) som passerat sedan startdatum
+        $interval = $start_date->diff($today);
+        $weeks_passed = (int)floor($interval->days / 7);
+        $cycles_passed = (int)floor($weeks_passed / $cycle_length_in_weeks);
 
-            if ($today >= $start_date && $today <= $cycle_end) {
-                // Vi har hittat den nuvarande cykeln
-                return [
-                    'Dagens datum' => $today->format('Y-m-d'),
-                    'Cykel nr' => $nr_cycle,
-                    'Cykel Start' => $start_date->format('Y-m-d'),
-                    'Cykel Slut' => $cycle_end->format('Y-m-d'),
-                ];
-            }
+        // Beräkna den aktuella cykeln
+        $current_cycle_nr = $initial_cycle_nr + $cycles_passed;
+        $current_cycle_start = clone $start_date;
+        $current_cycle_start->add(new DateInterval("P" . ($cycles_passed * $cycle_length_in_weeks) . "W"));
 
-            // Gå till nästa cykel
-            $start_date->add($cycle_length);
-            $nr_cycle++;
+        // Beräkna cykelns slutdatum (fredagen)
+        $current_cycle_end = clone $current_cycle_start;
+        $current_cycle_end->add($cycle_length)->modify('-3 days');
+
+        // Kontrollera om dagens datum faller inom den aktuella cykeln
+        if ($today >= $current_cycle_start && $today <= $current_cycle_end) {
+            return [
+                'Dagens datum' => $today->format('Y-m-d'),
+                'Cykel nr' => $current_cycle_nr,
+                'Cykel Start' => $current_cycle_start->format('Y-m-d'),
+                'Cykel Slut' => $current_cycle_end->format('Y-m-d'),
+            ];
         }
 
         // Om ingen cykel matchade, returnera null eller någon indikation på att cykeln inte pågår
-        return null;
+        return [
+            'Dagens datum' => $today->format('Y-m-d'),
+            'Cykel nr' => null,
+            'Cykel Start' => null,
+            'Cykel Slut' => null,
+        ];
     }
 
     public function render()

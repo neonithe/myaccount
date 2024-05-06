@@ -42,6 +42,7 @@ class Dash extends Component
     // Edit mytodo
     public $editTodo, $editComment, $editLink;
     public $editModal = false, $todoItem;
+    public $isPrio, $isPrivate;
 
     public function mount() {
         $this->note = Note::where('user_id', Auth::id())->where('firstpage', true)->first();
@@ -133,19 +134,23 @@ class Dash extends Component
 
     public function openEdit($id) {
         $this->todoItem = Todo::findOrFail($id);
-        $this->editModal = true;
-        $this->editTodo = $this->todoItem->todo;
-        $this->editLink = $this->todoItem->link;
-        $this->editComment = $this->todoItem->comment;
+        $this->editModal    = true;
+        $this->editTodo     = $this->todoItem->todo;
+        $this->editLink     = $this->todoItem->link;
+        $this->editComment  = $this->todoItem->comment;
+        $this->isPrio       = $this->todoItem->notice;
+        $this->isPrivate    = $this->todoItem->private;
         $this->render();
     }
 
     public function cleanModal() {
+        $this->editModal    = false;
         $this->editTodo     = null;
         $this->editLink     = null;
         $this->editComment  = null;
-        $this->editModal    = false;
         $this->todoItem     = null;
+        $this->isPrio       = null;
+        $this->isPrivate    = null;
         $this->render();
     }
 

@@ -33,10 +33,10 @@
                                 <input wire:model="editTodo" type="text" class="bg-gray-700 py-0.5 text-base rounded-md w-full border-gray-600 font-bold">
                             </div>
                             <div>
-                                <button wire:click="editTodoPrivate" class="border rounded-md py-1 px-1 hover:bg-blue-600"><x-app.icons.fingerprint class="h-5 w-5"/></button>
+                                <button wire:click="editTodoPrivate" class="border rounded-md py-1 px-1 hover:bg-blue-600 @if ($isPrivate) bg-blue-500 @endif"><x-app.icons.fingerprint class="h-5 w-5"/></button>
                             </div>
                             <div>
-                                <button wire:click="editTodoPrio" class="border rounded-md py-1 px-1 hover:bg-red-600"><x-app.icons.varning class="h-5 w-5"/></button>
+                                <button wire:click="editTodoPrio" class="border rounded-md py-1 px-1 hover:bg-red-600 @if ($isPrio) bg-red-500 @endif"><x-app.icons.varning class="h-5 w-5"/></button>
                             </div>
                         </div>
                         <div class="grow mt-2">
