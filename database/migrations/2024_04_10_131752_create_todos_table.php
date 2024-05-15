@@ -34,7 +34,7 @@ return new class extends Migration
             $table->boolean('meeting')->default(false);
             $table->boolean('contact')->default(false);
 
-            //Type of mytodo
+            //Type of mytodo - regular/private
             $table->boolean('private')->default(false);
 
             $table->date('done_date')->nullable();
