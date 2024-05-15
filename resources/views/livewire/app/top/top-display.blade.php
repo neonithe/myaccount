@@ -33,28 +33,6 @@
         </div>
     </div>
 
-    <div class="hidden sm:block">
-        <div x-show="cycles" x-cloak class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4 mt-1">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-
-                    <div class="grid grid-cols-3 pb-2 border-b mb-1 px-2">
-                        <div>Start date</div>
-                        <div>End date</div>
-                        <div>Cycle NR</div>
-                    </div>
-                    @foreach ($this->generateCycleList() as $key => $cycle)
-                        <div class="grid grid-cols-3 py-2 hover:bg-gray-700 rounded-md px-2">
-                            <div>{{ $cycle['Startdatum'] }}</div>
-                            <div>{{ $cycle['Slutdatum'] }}</div>
-                            <div>{{ $cycle['Cykel nr'] }}</div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="block sm:hidden">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-1 pt-2">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -73,4 +51,31 @@
             </div>
         </div>
     </div>
+
+    <div class="hidden sm:block">
+        {{-- SLIDER - Show TODOs from list --}}
+        <x-app.modal.slider data="cycles" close="cycles = false" >
+            <x-slot name="title">
+                cycles
+            </x-slot>
+            <x-slot name="body">
+                <div class=" text-gray-900 dark:text-gray-100">
+
+                    <div class="grid grid-cols-3 pb-2 border-b mb-1 px-2">
+                        <div>Start date</div>
+                        <div>End date</div>
+                        <div>Cycle NR</div>
+                    </div>
+                    @foreach ($this->generateCycleList() as $key => $cycle)
+                        <div class="grid grid-cols-3 py-2 rounded-md px-2 @if ($this->getCurrentCycle()['Cykel nr'] == $cycle['Cykel nr']) bg-gray-700 @else hover:bg-gray-700 @endif">
+                            <div>{{ $cycle['Startdatum'] }}</div>
+                            <div>{{ $cycle['Slutdatum'] }}</div>
+                            <div>{{ $cycle['Cykel nr'] }}</div>
+                        </div>
+                    @endforeach
+                </div>
+            </x-slot>
+        </x-app.modal.slider>
+    </div>
+
 </div>

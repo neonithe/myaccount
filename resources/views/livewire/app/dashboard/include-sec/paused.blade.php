@@ -1,11 +1,11 @@
 <div class="bg-gray-700 rounded-md p-4">
-    <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Contact</div>
+    <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Paused</div>
 
     @php
-       ($private) ? $contactList = $this->getTodos('contact')->where('private', true) : $contactList = $this->getTodos('contact')->where('private', false);
+       ($private) ? $pauseList = $this->getTodos('paused')->where('private', true) : $pauseList = $this->getTodos('paused')->where('private', false);
     @endphp
 
-    @foreach ($contactList as $item)
+    @foreach ($pauseList as $item)
         <div class="flex justify-between text-sm border-b border-gray-600 py-1">
             <div class="tracking-widest grow">
                 <x-app.dash.edit-modal id="{{$item->id}}" todo="{{$item->todo}}" :editLink="$editLink" :editComment="$editComment" :isPrio="$isPrio" :isPrivate="$isPrivate" />

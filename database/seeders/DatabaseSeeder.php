@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Note;
-use App\Models\PrioList;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,14 +15,16 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        //$this->call(UserSeeder::class);
-        //$this->call(TodoSeeder::class);
-        //$this->call(WorkoutSeeder::class);
-        //$this->call(RecipeSeeder::class);
-        //$this->call(EcoSeeder::class);
-        //$this->call(CryptoSeeder::class);
-        //$this->call(LinkSeeder::class);
+        /** **/
+        $this->call(UserSeeder::class);
+        $this->call(TodoSeeder::class);
+        $this->call(WorkoutSeeder::class);
+        $this->call(RecipeSeeder::class);
+        $this->call(EcoSeeder::class);
+        $this->call(CryptoSeeder::class);
+        $this->call(LinkSeeder::class);
         //$this->call(SettingsSeeder::class);
+
 
     }
 }

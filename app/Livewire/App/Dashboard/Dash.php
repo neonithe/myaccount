@@ -29,13 +29,14 @@ class Dash extends Component
     use WithPagination;
 
     // MyTodo
+    public $private;
     public $pausedCount, $prioCount, $remindCount, $regularCount, $allCount, $meetingCount, $contactCount, $doneCount;
     // Crypto
     public $cryptoList = [];
 
     public $dayName;
 
-    public $showLinks = 5, $search, $filterTag, $filterCat, $filterFav;
+    public $showLinks = 10, $search, $filterTag, $filterCat, $filterFav;
 
     public $note;
 
@@ -46,6 +47,7 @@ class Dash extends Component
 
     public function mount() {
         $this->note = Note::where('user_id', Auth::id())->where('firstpage', true)->first();
+        $this->private = Settings::where('user_id', Auth::id())->first()->private;
     }
 
     /** MyToDo ********************************************************************************************************/
@@ -118,55 +120,7 @@ class Dash extends Component
         $data->save();
     }
 
-    /** Edit todo ******/
-    public function updateTodo() {
-        $this->validate([
-            'editTodo'      =>  'required',
-        ]);
-        $this->todoItem->todo     = $this->editTodo;
-        $this->todoItem->link     = $this->editLink;
-        $this->todoItem->comment  = $this->editComment;
-        $this->todoItem->save();
-        $this->editModal    = false;
-        $this->dispatch('successmessage', 'Todo', 'Todo is now updated.' );
-        $this->render();
-    }
 
-    public function openEdit($id) {
-        $this->todoItem = Todo::findOrFail($id);
-        $this->editModal    = true;
-        $this->editTodo     = $this->todoItem->todo;
-        $this->editLink     = $this->todoItem->link;
-        $this->editComment  = $this->todoItem->comment;
-        $this->isPrio       = $this->todoItem->notice;
-        $this->isPrivate    = $this->todoItem->private;
-        $this->render();
-    }
-
-    public function cleanModal() {
-        $this->editModal    = false;
-        $this->editTodo     = null;
-        $this->editLink     = null;
-        $this->editComment  = null;
-        $this->todoItem     = null;
-        $this->isPrio       = null;
-        $this->isPrivate    = null;
-        $this->render();
-    }
-
-    public function editTodoPrio() {
-        ($this->todoItem->notice) ? $this->todoItem->notice = false : $this->todoItem->notice = true;
-        $this->todoItem->save();
-        $this->editModal = false;
-        $this->render();
-    }
-
-    public function editTodoPrivate() {
-        ($this->todoItem->private) ? $this->todoItem->private = false : $this->todoItem->private = true;
-        $this->todoItem->save();
-        $this->editModal = false;
-        $this->render();
-    }
 
     /** Crypto ********************************************************************************************************/
     public function calc()
@@ -230,58 +184,6 @@ class Dash extends Component
         $this->render();
     }
 
-    /** Speedbuttons **************************************************************************************************/
-    public function getButtonLink($id) {
-        $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first();
-        (!$data) ? $res = null : $res = Link::findOrfail($data->link_id)->id;
-        return $res;
-    }
-
-    public function getOrder($id) {
-        if ( $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first() ) {
-            return $data->order;
-        } else {
-            return 0;
-        }
-    }
-
-    public function changeOrder($id, $orderNr) {
-        $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first();
-        $data->order = $orderNr;
-        $data->save();
-        $this->dispatch('successmessage', 'Link button', 'Order has been changed.' );
-    }
-
-    public function setButtonLink($id, $linkId) {
-        if (!$linkId) {
-            SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first()->delete();
-            $this->dispatch('successmessage', 'Link button', 'Button link is now removed.' );
-        } else {
-            if ( $data = SpeedButton::where('user_id', Auth::id())->where('button_id', $id)->first() ) {
-                $data->link_id = $linkId;
-                $data->save();
-                $this->dispatch('successmessage', 'Link button', 'Button link is now changed.' );
-            } else {
-                SpeedButton::create(['user_id' => Auth::id(), 'button_id' => $id, 'link_id' => $linkId, 'order' => 1]);
-                $this->dispatch('successmessage', 'Link button', 'Button link is now set.' );
-            }
-        }
-    }
-
-    public function getLink($id) {
-        return Link::findOrFail($id)->link;
-    }
-
-    public function buttonAlign($value) {
-        $data = Settings::where('user_id', Auth::id())->first();
-        $data->button_align = $value;
-        $data->save();
-        $this->render();
-    }
-
-    public function getLinkName($id) {
-        return Link::findOrFail($id)->name;
-    }
 
     /** Notes *********************************************************************************************************/
     public function changeNote($id, $type, $value) {
@@ -309,6 +211,7 @@ class Dash extends Component
         $data = Settings::findOrFail($id);
         $data->$type = $value;
         $data->save();
+        $this->dispatch('successmessage', 'Settings', 'Setting change successfully.');
     }
 
     public function test() {

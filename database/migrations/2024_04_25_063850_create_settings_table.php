@@ -17,12 +17,15 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('access')->default('user');
 
-            $table->date('start_cycle')->default('2024-03-25');
-            $table->integer('length_cycle')->default(2);
-            $table->integer('nr_cycle')->default(13);
-            $table->integer('show_nr_of_cycle')->default(12);
+            //Access
+            $table->boolean('private')->default(false);
 
-            $table->string('button_align')->default('left');
+            $table->date('start_cycle')->nullable();
+            $table->integer('length_cycle')->nullable();
+            $table->integer('nr_cycle')->nullable();
+            $table->integer('show_nr_of_cycle')->nullable();
+
+            $table->string('button_align')->default('right');
 
             // Active
             $table->boolean('access_topinfo')->default(true);

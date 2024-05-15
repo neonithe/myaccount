@@ -1,6 +1,11 @@
 <div class="bg-gray-700 rounded-md p-4">
     <div class="uppercase tracking-widest border-b border-gray-500 mb-1">Meeting</div>
-    @foreach ($this->getTodos('meeting') as $item)
+
+    @php
+        ($private) ? $meetingList = $this->getTodos('meeting')->where('private', true) : $meetingList = $this->getTodos('meeting')->where('private', false);
+    @endphp
+
+    @foreach ($meetingList as $item)
         <div @if ($item->comment) x-tooltip="{{$item->comment}}" @endif class="flex justify-between text-sm py-1 my-1 @if ($dayName == $item->remind_day) bg-blue-600 border @else border-b border-gray-600 @endif px-1 rounded-md">
             <div class="tracking-widest truncate">
                 @if ($item->link)

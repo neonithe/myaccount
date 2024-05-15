@@ -19,7 +19,6 @@
         @if ($workoutExercise->count() != 0)
             @foreach ($workoutExercise as $exercise)
                 <div x-show="!addExercise" class="mt-1 flex justify-between gap-1">
-
                     <div x-data="{options: false}" class="truncate col-span-2 w-full">
                         <label class="text-xs uppercase">Exercise</label>
                         <div class="flex gap-1 justify-end">

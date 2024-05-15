@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
             'length_cycle'      => 2,
             'nr_cycle'          => 13,
             'show_nr_of_cycle'  => 12,
+            'private'           => true,
 
             'access_topinfo'    => true,
             'access_eco'        => true,
