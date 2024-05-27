@@ -1,15 +1,47 @@
 <div x-data="{slider: false}">
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-1 mt-1 dark:text-white flex gap-2 justify-between @if ($settings->button_align == 'right')  @else flex-row-reverse @endif px-2 sm:px-0 @if ($buttons->count() < 5) justify-end @else justify-between @endif">
-        <div class="mt-0.5 uppercase tracking-widest">
-            @if ($settings->private)
-                private
-            @else
-                regular
-            @endif
-        </div>
+
         <div class="sm:flex sm:gap-4">
 
+           <div class="mt-2 sm:mt-0">
+               <button wire:click="openTodo" x-tooltip="Open todo - list/add" class="border px-1 py-1 rounded-md hover:bg-green-600">
+                   <x-app.icons.check class="h-6 w-6"/>
+               </button>
+
+               @if ($settings->dash_link)
+                   <button wire:click="changeDashLink" x-tooltip="Show links" class="border px-1 py-1 rounded-md hover:bg-blue-600 bg-blue-600">
+                       <x-app.icons.link class="h-6 w-6"/>
+                   </button>
+               @else
+                   <button wire:click="changeDashLink" x-tooltip="Hide links" class="border px-1 py-1 rounded-md hover:bg-blue-600">
+                       <x-app.icons.link class="h-6 w-6"/>
+                   </button>
+               @endif
+
+               @if ($settings->private)
+                   <button wire:click="changePrivateStatus" x-tooltip="Show Regular" class="border px-1 py-1 rounded-md hover:bg-blue-600 bg-blue-600">
+                       <x-app.icons.lock-open class="h-6 w-6"/>
+                   </button>
+               @else
+                   <button wire:click="changePrivateStatus" x-tooltip="Show Private" class="border px-1 py-1 rounded-md hover:bg-blue-600">
+                       <x-app.icons.lock class="h-6 w-6"/>
+                   </button>
+               @endif
+
+               <button @click="slider = true" wire:click="set('typeOfSettings', 'regular')" x-tooltip="Settings - Buttons, cycles and so on" class="border px-1 py-1 rounded-md hover:bg-blue-600">
+                   <x-app.icons.gear-1 class="h-6 w-6"/>
+               </button>
+
+               @if ($settings->access = 'admin')
+                   <button @click="slider = true" wire:click="set('typeOfSettings', 'admin')" x-tooltip="Settings for Admin Settings" class="border px-1 py-1 rounded-md hover:bg-blue-600">
+                       <x-app.icons.key class="h-6 w-6"/>
+                   </button>
+               @endif
+           </div>
+
+        </div>
+        @if ($settings->button_align == 'left')
             <div class="hidden sm:block">
                 <div class="flex gap-1">
                     @foreach ($buttons as $button)
@@ -37,34 +69,7 @@
                 </div>
             </div>
 
-
-           <div class="mt-2 sm:mt-0">
-               <button wire:click="openTodo" x-tooltip="Open todo - list/add" class="border px-1 py-1 rounded-md hover:bg-green-600">
-                   <x-app.icons.check class="h-6 w-6"/>
-               </button>
-
-               @if ($settings->private)
-                   <button wire:click="changePrivateStatus" x-tooltip="Show Regular" class="border px-1 py-1 rounded-md hover:bg-blue-600">
-                       <x-app.icons.lock-open class="h-6 w-6"/>
-                   </button>
-               @else
-                   <button wire:click="changePrivateStatus" x-tooltip="Show Private" class="border px-1 py-1 rounded-md hover:bg-blue-600">
-                       <x-app.icons.lock class="h-6 w-6"/>
-                   </button>
-               @endif
-
-               <button @click="slider = true" wire:click="set('typeOfSettings', 'regular')" x-tooltip="Settings - Buttons, cycles and so on" class="border px-1 py-1 rounded-md hover:bg-blue-600">
-                   <x-app.icons.gear-1 class="h-6 w-6"/>
-               </button>
-
-               @if ($settings->access = 'admin')
-                   <button @click="slider = true" wire:click="set('typeOfSettings', 'admin')" x-tooltip="Settings for Admin Settings" class="border px-1 py-1 rounded-md hover:bg-blue-600">
-                       <x-app.icons.key class="h-6 w-6"/>
-                   </button>
-               @endif
-           </div>
-
-        </div>
+        @endif
     </div>
 
     <x-app.modal.slider data="slider" close="slider = false" >
@@ -122,9 +127,9 @@
                     </button>
                 </div>
 
-                <div>
+                <div class="">
                     @if ($settings->private)
-                        <button wire:click="changePrivateStatus" x-tooltip="Show Regular" class="border px-1 py-1 rounded-md hover:bg-blue-600">
+                        <button wire:click="changePrivateStatus" x-tooltip="Show Regular" class="border px-1 py-1 rounded-md hover:bg-blue-600 bg-blue-600">
                             <x-app.icons.lock-open class="h-6 w-6"/>
                         </button>
                     @else

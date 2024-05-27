@@ -34,6 +34,9 @@ return new class extends Migration
             $table->boolean('access_recipe')->default(false);
             $table->boolean('access_workout')->default(false);
 
+            // Dash link
+            $table->boolean('dash_link')->default(false);
+
             $table->timestamps();
         });
     }

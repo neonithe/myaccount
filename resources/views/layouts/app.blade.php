@@ -14,6 +14,8 @@
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -33,7 +35,5 @@
         </div>
 
         @livewireScripts
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
-        <script src="https://unpkg.com/tippy.js@6"></script>
     </body>
 </html>

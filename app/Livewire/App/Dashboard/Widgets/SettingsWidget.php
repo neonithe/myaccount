@@ -79,6 +79,13 @@ class SettingsWidget extends Component
         ($this->settings->private) ? $this->settings->private = false : $this->settings->private = true;
         $this->settings->save();
         $this->dispatch('renderTodo');
+        $this->dispatch('rendertop');
+    }
+
+    public function changeDashLink() {
+        ($this->settings->dash_link) ? $this->settings->dash_link = false : $this->settings->dash_link = true;
+        $this->settings->save();
+        $this->dispatch('renderdash');
     }
 
     public function openTodo() {

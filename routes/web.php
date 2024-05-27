@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     // Notes
     Route::get('/notes', \App\Livewire\App\Note\SmallNotes::class)->name('note');
 
+    // Planing
+    Route::get('/plan', \App\Livewire\App\Planing\Planing::class)->name('plan');
+
 });
 
 require __DIR__.'/auth.php';

@@ -70,17 +70,17 @@
     </div>
 
     {{-- SLIDER - Show TODOs from list --}}
-    <x-app.modal.slider data="sliderShow" close="sliderShow = false" >
+    <x-app.modal.slider data="sliderShow" close="sliderShow = false">
         <x-slot name="title">
             todo
         </x-slot>
         <x-slot name="body">
-            @include('livewire.app.dashboard.widgets.list-edit')
+            @include('livewire.app.dashboard.widgets.todo.list-edit')
         </x-slot>
     </x-app.modal.slider>
 
     {{-- SLIDER - Add, List, Edit TODOs --}}
-    <x-app.modal.slider data="sliderListAddTodo" close="sliderListAddTodo = false" >
+    <x-app.modal.slider data="sliderListAddTodo" close="sliderListAddTodo = false">
         <x-slot name="title">
             todo
         </x-slot>
@@ -89,29 +89,38 @@
             <div x-data="{add: true, list: false, doneTodo: false}" class="hidden sm:block">
                 <div class="-mt-4 text-white flex justify-end gap-2 pr-1 mt-0.5">
                     <div>
-                        <button wire:click="showList" @click="add = true, list = false, doneTodo = false" class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-700 bg-gray-700">Add todo</button>
+                        <button wire:click="showList" @click="add = true, list = false, doneTodo = false"
+                                class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-700 bg-gray-700">
+                            Add todo
+                        </button>
                     </div>
                     <div>
-                        <button wire:click="showList" @click="add = false, list = true, doneTodo = false" class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-600">All todos</button>
+                        <button wire:click="showList" @click="add = false, list = true, doneTodo = false"
+                                class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-600">
+                            All todos
+                        </button>
                     </div>
                     <div>
-                        <button wire:click="showDone" @click="add = false, list = true, doneTodo = true" class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-600">Done</button>
+                        <button wire:click="showDone" @click="add = false, list = true, doneTodo = true"
+                                class="text-sm uppercase tracking-widest border-t border-r border-l pt-0.5 pb-0.5 px-2 rounded-t-md border-gray-500 hover:bg-gray-600">
+                            Done
+                        </button>
                     </div>
                 </div>
 
                 <div x-show="add">
-                    @include('livewire.app.dashboard.widgets.add')
+                    @include('livewire.app.dashboard.widgets.todo.add')
                 </div>
 
                 <div x-show="list">
-                    @include('livewire.app.dashboard.widgets.list')
+                    @include('livewire.app.dashboard.widgets.todo.list')
                 </div>
             </div>
 
             <div x-data="{list: true, doneTodo: false}">
 
                 <div x-show="list" class="sm:hidden">
-                    @include('livewire.app.dashboard.widgets.sm-list')
+                    @include('livewire.app.dashboard.widgets.todo.sm-list')
                 </div>
 
                 @include('livewire.app.dashboard.widgets.todo.sm-add')

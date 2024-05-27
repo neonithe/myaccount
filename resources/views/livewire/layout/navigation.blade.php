@@ -33,9 +33,11 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dash') }}
                     </x-nav-link>
+                    {{--
                     <x-nav-link :href="route('todo')" :active="request()->routeIs('todo')" wire:navigate>
                         {{ __('ToDo') }}
                     </x-nav-link>
+                    --}}
                     @if ($settings->access_workout)
                         <x-nav-link :href="route('workout')" :active="request()->routeIs('workout')" wire:navigate>
                             {{ __('Workout') }}
@@ -56,9 +58,11 @@ new class extends Component
                             {{ __('Links') }}
                         </x-nav-link>
                     @endif
-                    <x-nav-link :href="route('note')" :active="request()->routeIs('note')" wire:navigate>
-                        {{ __('Notes') }}
+                    {{----}}
+                    <x-nav-link :href="route('plan')" :active="request()->routeIs('plan')" wire:navigate>
+                        {{ __('Planing') }}
                     </x-nav-link>
+
                 </div>
             </div>
 

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use DateInterval;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class TopDisplay extends Component
@@ -60,7 +61,7 @@ class TopDisplay extends Component
     public function getCurrentCycle()
     {
         // Hämta inställningar från databasen
-        $today = new DateTime('2024-05-06'); // Dagens datum
+        $today = new DateTime(date('Y-m-d'));
         $settings = $this->getSettings();
         $start_date = new DateTime($settings->start_cycle);
         $cycle_length_in_weeks = $settings->length_cycle;
@@ -102,6 +103,7 @@ class TopDisplay extends Component
         ];
     }
 
+    #[On('rendertop')]
     public function render()
     {
         $this->user     = Auth::user();

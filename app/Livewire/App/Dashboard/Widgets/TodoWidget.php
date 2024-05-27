@@ -229,6 +229,7 @@ class TodoWidget extends Component
     }
 
     public function repeatCheck($id) {
+
         $data = Todo::findOrFail($id);
         if ($data->repeat != null) {
 
